@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "LLM 提供商工厂与调用架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "consumer", "type": "frontend", "label": "聊天调用方", "pos": [60, 320], "size": [140, 60] },
+    { "id": "factory", "type": "backend", "label": "getLLMProvider 工厂", "pos": [370, 320], "size": [170, 60] },
+    { "id": "router", "type": "backend", "label": "ModelRouter 路由", "pos": [370, 140], "size": [170, 60] },
+    { "id": "map", "type": "backend", "label": "ContextWindowFinder", "pos": [370, 500], "size": [170, 60] },
+    { "id": "providers", "type": "backend", "label": "40+ Provider 类", "pos": [690, 320], "size": [160, 80] },
+    { "id": "embedder", "type": "backend", "label": "嵌入引擎", "pos": [690, 500], "size": [160, 60] },
+    { "id": "ext", "type": "external", "label": "外部 LLM API", "pos": [960, 320], "size": [150, 80] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils（本仓库内）", "wraps": ["consumer", "factory", "router", "map", "providers", "embedder"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "consumer", "to": "factory", "variant": "emphasis" },
+    { "id": "c2", "from": "factory", "to": "providers", "variant": "emphasis" },
+    { "id": "c3", "from": "factory", "to": "embedder" },
+    { "id": "c4", "from": "providers", "to": "map" },
+    { "id": "c5", "from": "providers", "to": "ext", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["工厂按 LLM_PROVIDER 懒加载 require", "统一方法约定 duck-typing", "外部 LLM API 不在本仓库内"] }
+  ]
+}

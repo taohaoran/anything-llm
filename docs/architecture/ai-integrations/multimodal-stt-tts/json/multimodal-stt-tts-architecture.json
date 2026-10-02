@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "多模态三类工厂架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "ep", "type": "frontend", "label": "Endpoints/前端", "pos": [60, 320], "size": [140, 60] },
+    { "id": "imgf", "type": "backend", "label": "图像工厂", "pos": [380, 160], "size": [130, 55] },
+    { "id": "sttf", "type": "backend", "label": "STT 工厂", "pos": [380, 320], "size": [130, 55] },
+    { "id": "ttsf", "type": "backend", "label": "TTS 工厂", "pos": [380, 480], "size": [130, 55] },
+    { "id": "imgp", "type": "backend", "label": "图像生成适配", "pos": [680, 160], "size": [150, 55] },
+    { "id": "sttp", "type": "backend", "label": "STT 适配", "pos": [680, 320], "size": [150, 55] },
+    { "id": "ttsp", "type": "backend", "label": "TTS 适配", "pos": [680, 480], "size": [150, 55] },
+    { "id": "ext", "type": "external", "label": "外部多模态云 API", "pos": [960, 320], "size": [150, 90] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils（本仓库内）", "wraps": ["ep", "imgf", "sttf", "ttsf", "imgp", "sttp", "ttsp"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "ep", "to": "imgf" },
+    { "id": "c2", "from": "ep", "to": "sttf", "variant": "emphasis" },
+    { "id": "c3", "from": "ep", "to": "ttsf" },
+    { "id": "c4", "from": "imgf", "to": "imgp" },
+    { "id": "c5", "from": "sttf", "to": "sttp", "variant": "emphasis" },
+    { "id": "c6", "from": "ttsf", "to": "ttsp" },
+    { "id": "c7", "from": "imgp", "to": "ext" },
+    { "id": "c8", "from": "sttp", "to": "ext" },
+    { "id": "c9", "from": "ttsp", "to": "ext" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["图像/STT/TTS 三个独立工厂", "外部多模态 API 不在本仓库内", "native STT 为浏览器端能力"] }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Prisma 数据层架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 600] },
+  "components": [
+    { "id": "ep", "type": "backend", "label": "API 端点", "pos": [50, 130], "size": [130, 60] },
+    { "id": "mdl", "type": "backend", "label": "models/ 封装层", "pos": [330, 130], "size": [160, 60], "tag": "32 表" },
+    { "id": "client", "type": "backend", "label": "PrismaClient 单例", "pos": [620, 130], "size": [160, 60] },
+    { "id": "sqlite", "type": "database", "label": "SQLite 文件", "pos": [900, 130], "size": [150, 60] },
+    { "id": "schema", "type": "backend", "label": "schema.prisma", "pos": [620, 350], "size": [160, 60] },
+    { "id": "mig", "type": "backend", "label": "migrations 41 个", "pos": [330, 350], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/prisma + utils/prisma", "wraps": ["client", "schema", "mig", "sqlite"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "ep", "to": "mdl", "label": "调用模型方法", "variant": "emphasis" },
+    { "id": "c2", "from": "mdl", "to": "client", "label": "类型化查询", "variant": "emphasis" },
+    { "id": "c3", "from": "client", "to": "sqlite", "label": "SQL", "variant": "default" },
+    { "id": "c4", "from": "schema", "to": "client", "label": "生成 client", "variant": "dashed", "fromSide": "top", "toSide": "bottom" },
+    { "id": "c5", "from": "mig", "to": "sqlite", "label": "迁移建表", "variant": "dashed", "fromSide": "top", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "默认存储", "items": ["SQLite: storage/anythingllm.db", "可切 PostgreSQL", "单例 PrismaClient"] }
+  ]
+}

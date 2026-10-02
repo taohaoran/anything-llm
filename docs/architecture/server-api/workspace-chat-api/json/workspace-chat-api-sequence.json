@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "工作区流式聊天请求时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 820] },
+  "participants": [
+    { "id": "c", "type": "frontend", "label": "Web 客户端" },
+    { "id": "ep", "type": "backend", "label": "聊天端点" },
+    { "id": "mw", "type": "security", "label": "工作区校验" },
+    { "id": "st", "type": "backend", "label": "流式处理" },
+    { "id": "ai", "type": "external", "label": "LLM/向量库" },
+    { "id": "db", "type": "database", "label": "聊天记录" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "c", "to": "ep", "y": 160, "label": "POST /workspace/:slug/stream-chat", "variant": "emphasis" },
+    { "id": "m2", "from": "ep", "to": "mw", "y": 230, "label": "按 slug 校验工作区", "variant": "default" },
+    { "id": "m3", "from": "mw", "to": "ep", "y": 295, "label": "注入 locals.workspace", "variant": "return" },
+    { "id": "m4", "from": "ep", "to": "st", "y": 360, "label": "配额检查后 flush SSE 头", "variant": "emphasis" },
+    { "id": "m5", "from": "st", "to": "ai", "y": 430, "label": "检索上下文+流式补全", "variant": "default" },
+    { "id": "m6", "from": "ai", "to": "st", "y": 500, "label": "增量 token 回流", "variant": "return" },
+    { "id": "m7", "from": "st", "to": "db", "y": 570, "label": "落库问答记录", "variant": "dashed" },
+    { "id": "m8", "from": "st", "to": "c", "y": 640, "label": "writeResponseChunk 推送", "variant": "return" },
+    { "id": "m9", "from": "ep", "to": "c", "y": 710, "label": "response.end 关闭流", "variant": "return" }
+  ]
+}

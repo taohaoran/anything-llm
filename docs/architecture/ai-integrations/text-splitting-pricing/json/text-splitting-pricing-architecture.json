@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "切分/计数/定价架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "src", "type": "frontend", "label": "纯文本文档", "pos": [60, 320], "size": [130, 60] },
+    { "id": "split", "type": "backend", "label": "TextSplitter", "pos": [360, 200], "size": [150, 60] },
+    { "id": "tok", "type": "backend", "label": "TokenManager", "pos": [360, 360], "size": [150, 60] },
+    { "id": "price", "type": "backend", "label": "modelPricing", "pos": [360, 520], "size": [150, 60] },
+    { "id": "out", "type": "backend", "label": "chunk+token+成本", "pos": [680, 360], "size": [160, 70] },
+    { "id": "ext", "type": "external", "label": "js-tiktoken", "pos": [680, 520], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils（本仓库内）", "wraps": ["src", "split", "tok", "price", "out"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "src", "to": "split", "variant": "emphasis" },
+    { "id": "c2", "from": "split", "to": "out" },
+    { "id": "c3", "from": "tok", "to": "out", "variant": "emphasis" },
+    { "id": "c4", "from": "price", "to": "out" },
+    { "id": "c5", "from": "tok", "to": "ext" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["TextSplitter 默认 chunk1000/overlap20", "TokenManager 按模型单例缓存", "本地定价 JSON 无网络"] }
+  ]
+}

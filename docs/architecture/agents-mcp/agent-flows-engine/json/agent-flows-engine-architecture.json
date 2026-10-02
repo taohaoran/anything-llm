@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Agent Flows 引擎架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "cls", "type": "backend", "label": "AgentFlows 静态类", "pos": [40, 80], "size": [160, 60], "tag": "CRUD/加载" },
+    { "id": "exec", "type": "backend", "label": "FlowExecutor", "pos": [280, 80], "size": [150, 60], "tag": "步骤编排" },
+    { "id": "provider", "type": "cloud", "label": "LLM Provider", "pos": [520, 80], "size": [150, 60], "tag": "llmInstruction" },
+    { "id": "steps", "type": "backend", "label": "步骤执行器", "pos": [280, 270], "size": [150, 60], "tag": "api/llm/抓取" },
+    { "id": "store", "type": "database", "label": "flowsDir JSON", "pos": [520, 270], "size": [150, 60], "tag": "流程定义" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils/agentFlows（本仓库源码内）", "wraps": ["cls", "exec", "steps", "store"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "cls", "to": "exec", "label": "executeFlow", "variant": "emphasis" },
+    { "id": "c2", "from": "exec", "to": "provider", "label": "llm 指令", "variant": "emphasis" },
+    { "id": "c3", "from": "exec", "to": "steps", "label": "按 type 分发", "labelDy": 26 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["加载流程 JSON → 顺序执行步骤 → 变量传递 → 结果回宿主 Agent"] }
+  ]
+}

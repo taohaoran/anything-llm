@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "嵌入引擎工厂与重排架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "docmgr", "type": "frontend", "label": "DocumentManager/聊天", "pos": [60, 320], "size": [160, 60] },
+    { "id": "factory", "type": "backend", "label": "嵌入工厂", "pos": [380, 320], "size": [140, 60], "tag": "EMBEDDING_ENGINE" },
+    { "id": "engines", "type": "backend", "label": "14 个嵌入引擎", "pos": [680, 200], "size": [160, 80], "tag": "EmbeddingEngines/*" },
+    { "id": "native", "type": "backend", "label": "Native 本地推理", "pos": [680, 380], "size": [160, 70], "tag": "onnxruntime" },
+    { "id": "reranker", "type": "backend", "label": "Native 重排序器", "pos": [680, 520], "size": [160, 60] },
+    { "id": "ext", "type": "external", "label": "外部嵌入 API", "pos": [960, 200], "size": [150, 80] },
+    { "id": "hf", "type": "external", "label": "HuggingFace 模型", "pos": [960, 380], "size": [150, 70] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils（本仓库内）", "wraps": ["docmgr", "factory", "engines", "native", "reranker"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "docmgr", "to": "factory", "variant": "emphasis" },
+    { "id": "c2", "from": "factory", "to": "engines", "variant": "emphasis" },
+    { "id": "c3", "from": "factory", "to": "native" },
+    { "id": "c4", "from": "engines", "to": "ext" },
+    { "id": "c5", "from": "native", "to": "hf" },
+    { "id": "c6", "from": "reranker", "to": "native" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["统一 embedTextInput/embedChunks 接口", "Native ONNX 单例复用", "外部嵌入 API 不在本仓库内"] }
+  ]
+}

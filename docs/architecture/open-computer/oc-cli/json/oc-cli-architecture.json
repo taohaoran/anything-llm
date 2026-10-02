@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "open-computer CLI 架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "user", "type": "external", "label": "终端用户", "pos": [40, 80], "size": [130, 60], "tag": "输入 oc 命令" },
+    { "id": "cli", "type": "backend", "label": "oc 入口 index.ts", "pos": [250, 80], "size": [160, 60], "tag": "tsx 启动" },
+    { "id": "reg", "type": "backend", "label": "registry.ts", "pos": [480, 80], "size": [140, 60], "tag": "命令注册" },
+    { "id": "cmd", "type": "backend", "label": "commands 命令集", "pos": [250, 270], "size": [160, 60], "tag": "start/stop/status" },
+    { "id": "vm", "type": "backend", "label": "vm/config 模块", "pos": [480, 270], "size": [160, 60], "tag": "编排能力" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "open-computer/cli（本仓库源码内）", "wraps": ["cli", "reg", "cmd", "vm"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "cli", "label": "oc <cmd>", "variant": "emphasis" },
+    { "id": "c2", "from": "cli", "to": "reg", "label": "注册命令" },
+    { "id": "c3", "from": "reg", "to": "cmd", "label": "分发", "variant": "emphasis" },
+    { "id": "c4", "from": "cmd", "to": "vm", "label": "调用编排" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["tsx 入口 → 注册命令 → 按子命令分发 → 调 vm/config 编排"] }
+  ]
+}

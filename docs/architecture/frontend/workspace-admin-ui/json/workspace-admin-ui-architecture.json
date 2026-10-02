@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "workspace-admin-ui 工作区管理架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "user", "type": "external", "label": "管理员/成员", "pos": [60, 280], "size": [120, 60] },
+    { "id": "shell", "type": "frontend", "label": "WorkspaceSettings 外壳", "pos": [250, 280], "size": [150, 60], "tag": "Tab 路由" },
+    { "id": "tabs", "type": "frontend", "label": "五个设置页签", "pos": [470, 280], "size": [140, 60], "tag": "外观/聊天/向量/成员/Agent" },
+    { "id": "model", "type": "frontend", "label": "models/workspace", "pos": [680, 280], "size": [140, 60] },
+    { "id": "api", "type": "external", "label": "后端 REST API", "pos": [890, 280], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "React 工作区设置 UI", "wraps": ["shell", "tabs", "model"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "shell", "label": "打开设置", "variant": "emphasis" },
+    { "id": "c2", "from": "shell", "to": "tabs", "label": "按 tab 渲染", "variant": "emphasis" },
+    { "id": "c3", "from": "tabs", "to": "model", "label": "自动保存/上传", "variant": "default" },
+    { "id": "c4", "from": "model", "to": "api", "label": "REST 调用", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "管理要点", "items": ["Tab 表驱动渲染五个设置页", "AutosaveForm 防抖保存", "成员页仅 admin/manager 可见"] }
+  ]
+}

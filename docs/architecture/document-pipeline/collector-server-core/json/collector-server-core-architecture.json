@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Collector 服务架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "server", "type": "external", "label": "server 主进程", "pos": [60, 320], "size": [150, 60] },
+    { "id": "app", "type": "backend", "label": "Express app", "pos": [360, 320], "size": [140, 60], "tag": "collector/index.js" },
+    { "id": "mw", "type": "backend", "label": "签名校验中间件", "pos": [360, 160], "size": [150, 55] },
+    { "id": "f1", "type": "backend", "label": "processSingleFile", "pos": [680, 160], "size": [150, 55] },
+    { "id": "f2", "type": "backend", "label": "processLink", "pos": [680, 280], "size": [140, 55] },
+    { "id": "f3", "type": "backend", "label": "processRawText", "pos": [680, 390], "size": [140, 55] },
+    { "id": "f4", "type": "backend", "label": "extensions", "pos": [680, 500], "size": [140, 55] },
+    { "id": "hotdir", "type": "database", "label": "hotdir 临时目录", "pos": [960, 320], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "collector 进程（本仓库内）", "wraps": ["app", "mw", "f1", "f2", "f3", "f4", "hotdir"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "server", "to": "app", "variant": "emphasis" },
+    { "id": "c3", "from": "app", "to": "f1" },
+    { "id": "c4", "from": "app", "to": "f2" },
+    { "id": "c5", "from": "app", "to": "f3" },
+    { "id": "c6", "from": "app", "to": "f4" },
+    { "id": "c7", "from": "f1", "to": "hotdir" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["独立 Express 进程", "所有路由 200+success 字段", "启动时清空 hotdir"] }
+  ]
+}

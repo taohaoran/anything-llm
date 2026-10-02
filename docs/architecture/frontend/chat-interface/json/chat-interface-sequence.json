@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "发送消息与流式渲染时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 860] },
+  "participants": [
+    { "id": "user", "type": "external", "label": "用户" },
+    { "id": "container", "type": "frontend", "label": "ChatContainer" },
+    { "id": "model", "type": "frontend", "label": "streamChat" },
+    { "id": "sse", "type": "external", "label": "后端 SSE" },
+    { "id": "ws", "type": "frontend", "label": "agent WS" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "container", "y": 160, "label": "输入文本+附件，点发送", "variant": "emphasis" },
+    { "id": "m2", "from": "container", "to": "model", "y": 226, "label": "streamChat(message, attachments)", "variant": "emphasis" },
+    { "id": "m3", "from": "model", "to": "sse", "y": 292, "label": "POST /workspace/:slug/stream-chat", "variant": "emphasis" },
+    { "id": "m4", "from": "sse", "to": "model", "y": 358, "label": "onmessage 逐块 JSON", "variant": "return" },
+    { "id": "m5", "from": "model", "to": "container", "y": 424, "label": "handleChat 回调更新历史", "variant": "default" },
+    { "id": "m6", "from": "sse", "to": "ws", "y": 490, "label": "@agent 切换，建 WebSocket", "variant": "dashed" },
+    { "id": "m7", "from": "ws", "to": "container", "y": 556, "label": "agentEventLoadingState 控停止钮", "variant": "dashed" },
+    { "id": "m8", "from": "user", "to": "container", "y": 622, "label": "点停止 → ABORT_STREAM_EVENT", "variant": "default" },
+    { "id": "m9", "from": "model", "to": "sse", "y": 688, "label": "ctrl.abort() 中止流", "variant": "return" },
+    { "id": "m10", "from": "sse", "to": "container", "y": 754, "label": "close 事件，渲染完成态", "variant": "return" }
+  ]
+}

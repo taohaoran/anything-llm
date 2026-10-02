@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "管理与系统 API 架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 620] },
+  "components": [
+    { "id": "web", "type": "frontend", "label": "管理后台", "pos": [50, 110], "size": [130, 60] },
+    { "id": "dev", "type": "external", "label": "开发者 API", "pos": [50, 320], "size": [130, 60] },
+    { "id": "guard", "type": "security", "label": "角色/Key 守卫", "pos": [330, 210], "size": [160, 60] },
+    { "id": "ep", "type": "backend", "label": "管理端点", "pos": [610, 210], "size": [150, 60], "tag": "admin.js" },
+    { "id": "user", "type": "database", "label": "User", "pos": [880, 90], "size": [120, 55] },
+    { "id": "ws", "type": "database", "label": "Workspace", "pos": [880, 200], "size": [120, 55] },
+    { "id": "inv", "type": "database", "label": "Invite", "pos": [880, 310], "size": [120, 55] },
+    { "id": "key", "type": "database", "label": "ApiKey", "pos": [880, 420], "size": [120, 55] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/endpoints admin.js + api/admin", "wraps": ["guard", "ep"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "web", "to": "guard", "label": "admin 会话", "variant": "emphasis" },
+    { "id": "c2", "from": "dev", "to": "guard", "label": "Bearer Key", "variant": "default" },
+    { "id": "c3", "from": "guard", "to": "ep", "label": "鉴权通过", "variant": "emphasis" },
+    { "id": "c4", "from": "ep", "to": "user", "label": "用户 CRUD", "variant": "default", "fromSide": "top", "toSide": "bottom" },
+    { "id": "c5", "from": "ep", "to": "ws", "label": "工作区管理", "variant": "default" },
+    { "id": "c6", "from": "ep", "to": "inv", "label": "邀请管理", "variant": "default" },
+    { "id": "c7", "from": "ep", "to": "key", "label": "密钥管理", "variant": "dashed", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "管理面", "items": ["用户/工作区/邀请/密钥", "系统偏好与设置", "开发者 OpenAPI 镜像"] }
+  ]
+}

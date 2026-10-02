@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "chat-interface 聊天界面架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户/浏览器", "pos": [60, 280], "size": [120, 60] },
+    { "id": "page", "type": "frontend", "label": "WorkspaceChat 页", "pos": [250, 280], "size": [130, 60] },
+    { "id": "history", "type": "frontend", "label": "ChatHistory", "pos": [200, 110], "size": [120, 56] },
+    { "id": "input", "type": "frontend", "label": "PromptInput+附件", "pos": [200, 450], "size": [130, 56] },
+    { "id": "container", "type": "frontend", "label": "ChatContainer", "pos": [450, 280], "size": [130, 60], "tag": "状态中枢" },
+    { "id": "stream", "type": "frontend", "label": "streamChat SSE 客户端", "pos": [660, 280], "size": [150, 60] },
+    { "id": "agentws", "type": "frontend", "label": "agent WebSocket", "pos": [820, 450], "size": [140, 56] },
+    { "id": "sse", "type": "external", "label": "后端 SSE stream-chat", "pos": [900, 280], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "React 聊天 UI", "wraps": ["page", "history", "input", "container", "stream", "agentws"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "page", "label": "打开工作区", "variant": "emphasis" },
+    { "id": "c2", "from": "page", "to": "container", "label": "渲染", "variant": "default" },
+    { "id": "c3", "from": "input", "to": "container", "label": "提交消息", "variant": "emphasis" },
+    { "id": "c4", "from": "container", "to": "stream", "label": "发起流式", "variant": "emphasis" },
+    { "id": "c5", "from": "stream", "to": "sse", "label": "POST SSE", "variant": "emphasis" },
+    { "id": "c6", "from": "stream", "to": "container", "label": "分块回调", "variant": "default" },
+    { "id": "c7", "from": "container", "to": "history", "label": "渲染历史", "variant": "default" },
+    { "id": "c8", "from": "container", "to": "agentws", "label": "agent 会话移交", "variant": "dashed" },
+    { "id": "c9", "from": "agentws", "to": "container", "label": "loading 状态", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "聊天要点", "items": ["SSE 流式渲染 + 中止控制器", "handleChat 按 type 分发消息", "agent 会话移交 WebSocket"] }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "app-shell 应用外壳架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "browser", "type": "external", "label": "浏览器", "pos": [60, 280], "size": [130, 60] },
+    { "id": "entry", "type": "frontend", "label": "main.jsx 路由入口", "pos": [280, 280], "size": [150, 60] },
+    { "id": "providers", "type": "frontend", "label": "App.jsx 上下文树", "pos": [280, 120], "size": [150, 60], "tag": "主题/认证/语言" },
+    { "id": "theme", "type": "frontend", "label": "ThemeContext", "pos": [520, 60], "size": [130, 56] },
+    { "id": "auth", "type": "frontend", "label": "AuthContext", "pos": [520, 140], "size": [130, 56] },
+    { "id": "guards", "type": "frontend", "label": "路由权限守卫", "pos": [520, 280], "size": [130, 60], "tag": "Private/Admin/Manager" },
+    { "id": "pages", "type": "frontend", "label": "懒加载页面", "pos": [740, 280], "size": [130, 60] },
+    { "id": "sidebar", "type": "frontend", "label": "Sidebar 导航", "pos": [740, 140], "size": [130, 56] },
+    { "id": "api", "type": "external", "label": "后端 REST API", "pos": [520, 440], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "React SPA 外壳", "wraps": ["entry", "providers", "theme", "auth", "guards", "pages", "sidebar"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "browser", "to": "entry", "label": "加载入口", "variant": "emphasis" },
+    { "id": "c2", "from": "entry", "to": "providers", "label": "挂载 Provider 树", "variant": "emphasis" },
+    { "id": "c3", "from": "providers", "to": "theme", "label": "提供主题", "variant": "default" },
+    { "id": "c4", "from": "providers", "to": "auth", "label": "提供会话", "variant": "default" },
+    { "id": "c5", "from": "entry", "to": "guards", "label": "包裹路由", "variant": "default" },
+    { "id": "c6", "from": "guards", "to": "pages", "label": "鉴权后渲染", "variant": "emphasis" },
+    { "id": "c7", "from": "pages", "to": "sidebar", "label": "布局嵌入", "variant": "default" },
+    { "id": "c8", "from": "guards", "to": "api", "label": "校验会话", "variant": "dashed", "route": "orthogonal-v" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "外壳要点", "items": ["createBrowserRouter 懒加载分包", "多层 Context 包裹全局状态", "四种路由守卫按角色放行"] }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "纯文本与音频处理架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "rt", "type": "backend", "label": "processRawText", "pos": [360, 200], "size": [160, 60] },
+    { "id": "aw", "type": "backend", "label": "convertAudioToWav", "pos": [360, 400], "size": [160, 60] },
+    { "id": "meta", "type": "backend", "label": "元数据规范化", "pos": [680, 120], "size": [150, 55] },
+    { "id": "ff", "type": "external", "label": "ffmpeg 子进程", "pos": [680, 400], "size": [150, 55] },
+    { "id": "doc", "type": "database", "label": "server 文档", "pos": [960, 200], "size": [140, 60] },
+    { "id": "stt", "type": "backend", "label": "Whisper STT", "pos": [960, 400], "size": [140, 55] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "collector（本仓库内）", "wraps": ["rt", "aw", "meta", "doc"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "rt", "to": "meta" },
+    { "id": "c2", "from": "rt", "to": "doc", "variant": "emphasis" },
+    { "id": "c3", "from": "aw", "to": "ff" },
+    { "id": "c4", "from": "ff", "to": "stt" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["纯文本直接构造文档对象", "音频转 16kHz mono WAV", "title 必填派生文件名"] }
+  ]
+}

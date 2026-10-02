@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "任务与记忆模型架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 560] },
+  "components": [
+    { "id": "bg", "type": "backend", "label": "后台 Worker", "pos": [50, 230], "size": [140, 60] },
+    { "id": "job", "type": "database", "label": "scheduled_jobs", "pos": [330, 110], "size": [160, 60] },
+    { "id": "run", "type": "database", "label": "scheduled_job_runs", "pos": [620, 110], "size": [180, 60] },
+    { "id": "mem", "type": "database", "label": "memories", "pos": [330, 360], "size": [140, 60] },
+    { "id": "log", "type": "database", "label": "event_logs", "pos": [620, 360], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/models scheduledJob + memory + eventLogs", "wraps": ["job", "run", "mem", "log"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "bg", "to": "job", "label": "拉取启用任务", "variant": "emphasis" },
+    { "id": "c2", "from": "job", "to": "run", "label": "产生运行记录", "variant": "emphasis" },
+    { "id": "c3", "from": "bg", "to": "mem", "label": "读写记忆", "variant": "default" },
+    { "id": "c4", "from": "run", "to": "log", "label": "审计事件", "variant": "dashed", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "模型要点", "items": ["job 与 run 一对多", "run 状态机 queued/running/...", "记忆按 user/workspace 作用域"] }
+  ]
+}

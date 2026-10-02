@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "嵌入 worker IPC 时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 760] },
+  "participants": [
+    { "id": "mgr", "type": "backend", "label": "worker 管理" },
+    { "id": "w", "type": "backend", "label": "worker" },
+    { "id": "col", "type": "external", "label": "collector" },
+    { "id": "vdb", "type": "database", "label": "向量库" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "mgr", "to": "w", "y": 170, "label": "embed files", "variant": "emphasis" },
+    { "id": "m2", "from": "w", "to": "col", "y": 230, "label": "解析文档" },
+    { "id": "m3", "from": "col", "to": "w", "y": 290, "label": "documents", "variant": "return" },
+    { "id": "m4", "from": "w", "to": "vdb", "y": 350, "label": "写向量", "variant": "emphasis" },
+    { "id": "m5", "from": "w", "to": "mgr", "y": 410, "label": "doc_complete", "variant": "return" },
+    { "id": "m6", "from": "w", "to": "mgr", "y": 470, "label": "all_complete", "variant": "return" }
+  ]
+}

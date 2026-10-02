@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "配置 LLM Provider 时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 800] },
+  "participants": [
+    { "id": "user", "type": "external", "label": "管理员" },
+    { "id": "page", "type": "frontend", "label": "LLM 偏好页" },
+    { "id": "picker", "type": "frontend", "label": "LLMSelection" },
+    { "id": "model", "type": "frontend", "label": "models/system" },
+    { "id": "api", "type": "external", "label": "后端 API" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "page", "y": 160, "label": "进入 /settings/llm-preference", "variant": "emphasis" },
+    { "id": "m2", "from": "page", "to": "picker", "y": 228, "label": "渲染 provider 列表", "variant": "default" },
+    { "id": "m3", "from": "user", "to": "picker", "y": 296, "label": "选 provider 填 API key", "variant": "default" },
+    { "id": "m4", "from": "picker", "to": "model", "y": 364, "label": "自动保存配置", "variant": "emphasis" },
+    { "id": "m5", "from": "model", "to": "api", "y": 432, "label": "POST /system/... 配置", "variant": "default" },
+    { "id": "m6", "from": "api", "to": "model", "y": 500, "label": "返回校验结果", "variant": "return" },
+    { "id": "m7", "from": "model", "to": "user", "y": 568, "label": "成功 toast / 错误提示", "variant": "default" },
+    { "id": "m8", "from": "user", "to": "page", "y": 636, "label": "切到向量库/用户管理页", "variant": "dashed" },
+    { "id": "m9", "from": "page", "to": "api", "y": 704, "label": "用户/工作区/密钥 CRUD", "variant": "dashed" }
+  ]
+}

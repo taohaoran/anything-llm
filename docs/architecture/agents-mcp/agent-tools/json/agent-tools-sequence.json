@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "一次工具调用的执行时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 760] },
+  "participants": [
+    { "id": "aib", "type": "backend", "label": "AIbitat" },
+    { "id": "prov", "type": "cloud", "label": "LLM Provider" },
+    { "id": "tool", "type": "backend", "label": "工具 handler" },
+    { "id": "ws", "type": "external", "label": "前端 WS" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "aib", "to": "prov", "y": 160, "label": "complete(消息, 工具列表)", "variant": "emphasis" },
+    { "id": "m2", "from": "prov", "to": "aib", "y": 220, "label": "返回 functionCall{name,args}", "variant": "return" },
+    { "id": "m3", "from": "aib", "to": "ws", "y": 270, "label": "introspect 正在调用", "variant": "dashed" },
+    { "id": "m4", "from": "aib", "to": "tool", "y": 330, "label": "handler(args)", "variant": "emphasis" },
+    { "id": "m5", "from": "tool", "to": "aib", "y": 390, "label": "结果/附件/引用", "variant": "return" },
+    { "id": "m6", "from": "aib", "to": "prov", "y": 450, "label": "回灌 function 消息再推理" },
+    { "id": "m7", "from": "prov", "to": "aib", "y": 510, "label": "返回文本回复", "variant": "return" },
+    { "id": "m8", "from": "aib", "to": "ws", "y": 570, "label": "流式文本+引用", "variant": "dashed" }
+  ]
+}

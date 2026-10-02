@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "语言检测与文案渲染时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 800] },
+  "participants": [
+    { "id": "user", "type": "external", "label": "用户" },
+    { "id": "detector", "type": "frontend", "label": "Detector" },
+    { "id": "i18n", "type": "frontend", "label": "i18next" },
+    { "id": "res", "type": "database", "label": "语言包" },
+    { "id": "comp", "type": "frontend", "label": "React 组件" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "detector", "y": 160, "label": "打开页面/切换语言", "variant": "emphasis" },
+    { "id": "m2", "from": "detector", "to": "i18n", "y": 230, "label": "给出 lng（小写归一）", "variant": "default" },
+    { "id": "m3", "from": "i18n", "to": "res", "y": 300, "label": "取对应语言字典", "variant": "emphasis" },
+    { "id": "m4", "from": "res", "to": "i18n", "y": 370, "label": "缺失键回退 en", "variant": "return" },
+    { "id": "m5", "from": "i18n", "to": "comp", "y": 440, "label": "触发 re-render t()", "variant": "default" },
+    { "id": "m6", "from": "comp", "to": "user", "y": 510, "label": "显示本地化文案", "variant": "return" },
+    { "id": "m7", "from": "user", "to": "i18n", "y": 590, "label": "贡献新语言 common.js", "variant": "dashed" },
+    { "id": "m8", "from": "i18n", "to": "res", "y": 660, "label": "verify:translations 校验键", "variant": "dashed" }
+  ]
+}

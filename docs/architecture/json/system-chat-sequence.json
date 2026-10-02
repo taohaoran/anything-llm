@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "工作区聊天请求时序（RAG + 流式响应）", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 860] },
+  "participants": [
+    { "id": "user", "type": "external", "label": "用户浏览器" },
+    { "id": "fe", "type": "frontend", "label": "前端 SPA" },
+    { "id": "srv", "type": "backend", "label": "Server API" },
+    { "id": "vec", "type": "database", "label": "向量数据库" },
+    { "id": "llm", "type": "cloud", "label": "LLM 提供商" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "fe", "y": 160, "label": "输入问题 + 发送", "variant": "emphasis" },
+    { "id": "m2", "from": "fe", "to": "srv", "y": 220, "label": "POST /workspace/:id/chat", "variant": "emphasis" },
+    { "id": "m3", "from": "srv", "to": "vec", "y": 280, "label": "向量检索 top-k", "variant": "default" },
+    { "id": "m4", "from": "vec", "to": "srv", "y": 340, "label": "返回相似文档块", "variant": "return" },
+    { "id": "m5", "from": "srv", "to": "llm", "y": 400, "label": "构造 prompt + 上下文（stream）", "variant": "emphasis" },
+    { "id": "m6", "from": "llm", "to": "srv", "y": 460, "label": "流式返回 token", "variant": "return" },
+    { "id": "m7", "from": "srv", "to": "fe", "y": 520, "label": "SSE 逐块转发", "variant": "emphasis" },
+    { "id": "m8", "from": "fe", "to": "user", "y": 580, "label": "渲染流式消息 + 来源引用", "variant": "return" }
+  ]
+}

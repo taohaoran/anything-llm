@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "向量库工厂与 provider 架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "dm", "type": "frontend", "label": "DocumentManager/检索", "pos": [60, 320], "size": [160, 60] },
+    { "id": "factory", "type": "backend", "label": "getVectorDbClass", "pos": [380, 320], "size": [150, 60], "tag": "VECTOR_DB" },
+    { "id": "base", "type": "backend", "label": "VectorDatabase 基类", "pos": [380, 150], "size": [150, 60] },
+    { "id": "lance", "type": "backend", "label": "LanceDb 默认本地", "pos": [680, 180], "size": [160, 70] },
+    { "id": "cloud", "type": "backend", "label": "9 个云库适配", "pos": [680, 380], "size": [160, 80], "tag": "Pinecone/Qdrant/..." },
+    { "id": "file", "type": "database", "label": "本地文件", "pos": [960, 180], "size": [140, 60] },
+    { "id": "ext", "type": "external", "label": "外部向量库云", "pos": [960, 380], "size": [150, 80] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils（本仓库内）", "wraps": ["dm", "factory", "base", "lance", "cloud"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "dm", "to": "factory", "variant": "emphasis" },
+    { "id": "c2", "from": "factory", "to": "lance", "variant": "emphasis" },
+    { "id": "c3", "from": "factory", "to": "cloud" },
+    { "id": "c4", "from": "lance", "to": "base" },
+    { "id": "c5", "from": "cloud", "to": "base" },
+    { "id": "c6", "from": "lance", "to": "file" },
+    { "id": "c7", "from": "cloud", "to": "ext" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["抽象基类定义统一接口", "默认 LanceDB 本地零依赖", "云向量库不在本仓库内"] }
+  ]
+}

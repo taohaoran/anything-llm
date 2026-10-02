@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "扩展机制与外部源架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "ext", "type": "backend", "label": "extensions(app)", "pos": [60, 320], "size": [150, 60] },
+    { "id": "resync", "type": "backend", "label": "resync 方法表", "pos": [380, 140], "size": [150, 55] },
+    { "id": "repo", "type": "backend", "label": "repo loader 工厂", "pos": [380, 260], "size": [150, 55] },
+    { "id": "other", "type": "backend", "label": "youtube/confluence 等", "pos": [380, 400], "size": [160, 55] },
+    { "id": "gh", "type": "external", "label": "GitHub/GitLab", "pos": [720, 260], "size": [140, 55] },
+    { "id": "yt", "type": "external", "label": "YouTube/Confluence", "pos": [720, 400], "size": [160, 55] },
+    { "id": "doc", "type": "database", "label": "server 文档", "pos": [960, 320], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "collector/extensions（本仓库内）", "wraps": ["ext", "resync", "repo", "other", "doc"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "ext", "to": "resync" },
+    { "id": "c2", "from": "ext", "to": "repo", "variant": "emphasis" },
+    { "id": "c3", "from": "ext", "to": "other" },
+    { "id": "c4", "from": "repo", "to": "gh" },
+    { "id": "c5", "from": "other", "to": "yt" },
+    { "id": "c6", "from": "repo", "to": "doc", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["动态 require 加载器", "外部 SaaS 不在本仓库内", "响应经 setDataSigner 签名"] }
+  ]
+}

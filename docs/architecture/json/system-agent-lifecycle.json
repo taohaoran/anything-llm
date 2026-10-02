@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": { "title": "Agent 执行会话生命周期", "quality_profile": "standard", "locale": "zh-CN", "viewBox": [1080, 600] },
+  "lanes": [
+    { "id": "main", "label": "执行相位" },
+    { "id": "tools", "label": "工具循环" }
+  ],
+  "states": [
+    { "id": "created", "type": "start", "label": "已创建", "lane": "main", "col": 0 },
+    { "id": "planning", "type": "active", "label": "思考规划", "lane": "main", "col": 1, "tag": "LLM 推理" },
+    { "id": "generating", "type": "active", "label": "生成回复", "lane": "main", "col": 2 },
+    { "id": "completed", "type": "success", "label": "已完成", "lane": "main", "col": 3 },
+    { "id": "tooling", "type": "active", "label": "工具调用", "lane": "tools", "col": 0, "tag": "循环" }
+  ],
+  "transitions": [
+    { "from": "created", "to": "planning", "label": "用户触发", "labelDy": 50 },
+    { "from": "planning", "to": "tooling", "label": "需工具", "labelDy": 30 },
+    { "from": "tooling", "to": "planning", "label": "结果返回", "labelAt": [260, 270] },
+    { "from": "planning", "to": "generating", "label": "直接回复", "labelAt": [300, 105] },
+    { "from": "generating", "to": "completed", "label": "输出结束", "labelDy": 50 }
+  ]
+}

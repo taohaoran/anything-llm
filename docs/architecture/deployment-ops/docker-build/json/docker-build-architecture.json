@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "docker-build 运行容器拓扑图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "host", "type": "external", "label": "Docker 宿主", "pos": [60, 280], "size": [120, 60] },
+    { "id": "server", "type": "backend", "label": "server 主服务", "pos": [260, 280], "size": [150, 60], "tag": "node index.js :3001" },
+    { "id": "storage", "type": "database", "label": "持久存储卷", "pos": [480, 280], "size": [130, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "anythingllm 容器", "wraps": ["server", "storage"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "host", "to": "server", "label": "映射 3001 端口", "variant": "emphasis" },
+    { "id": "c2", "from": "server", "to": "storage", "label": "读写 storage", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "运行要点", "items": ["entrypoint 并行拉起 server+collector", "prisma migrate 启动时执行", "HEALTHCHECK 探活 /api/ping"] }
+  ]
+}

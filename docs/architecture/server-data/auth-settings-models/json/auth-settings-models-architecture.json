@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "认证与配置模型架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 560] },
+  "components": [
+    { "id": "ep", "type": "backend", "label": "管理端点", "pos": [50, 230], "size": [130, 60] },
+    { "id": "ss", "type": "database", "label": "system_settings", "pos": [330, 110], "size": [170, 60], "tag": "键值配置" },
+    { "id": "key", "type": "database", "label": "api_keys", "pos": [330, 360], "size": [140, 60] },
+    { "id": "inv", "type": "database", "label": "invites", "pos": [620, 110], "size": [140, 60] },
+    { "id": "tok", "type": "database", "label": "temporary_auth_tokens", "pos": [620, 360], "size": [180, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/models systemSettings + apiKeys + invite", "wraps": ["ss", "key", "inv", "tok"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "ep", "to": "ss", "label": "读写配置", "variant": "emphasis" },
+    { "id": "c2", "from": "ep", "to": "key", "label": "密钥 CRUD", "variant": "default" },
+    { "id": "c3", "from": "ep", "to": "inv", "label": "邀请管理", "variant": "default" },
+    { "id": "c4", "from": "ep", "to": "tok", "label": "SSO 临时令牌", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "模型要点", "items": ["system_settings 为 label/value 键值表", "protectedFields 不可经 API 改", "ApiKey 随机 secret 唯一"] }
+  ]
+}

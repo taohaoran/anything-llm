@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "文档嵌入记录数据流", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1200, 460] },
+  "stages": [
+    { "label": "触发嵌入" },
+    { "label": "嵌入切分" },
+    { "label": "关系表" },
+    { "label": "向量库" }
+  ],
+  "nodes": [
+    { "id": "n1", "type": "backend", "label": "addDocuments", "stage": 0, "row": 0 },
+    { "id": "n2", "type": "backend", "label": "嵌入处理", "stage": 1, "row": 0 },
+    { "id": "n3", "type": "database", "label": "workspace_documents", "stage": 2, "row": 0 },
+    { "id": "n4", "type": "database", "label": "document_vectors", "stage": 2, "row": 1 },
+    { "id": "n5", "type": "external", "label": "向量索引", "stage": 3, "row": 1 }
+  ],
+  "flows": [
+    { "from": "n1", "to": "n2", "label": "触发", "variant": "emphasis" },
+    { "from": "n2", "to": "n3", "label": "写文档记录", "variant": "default" },
+    { "from": "n2", "to": "n4", "label": "bulkInsert", "variant": "default" },
+    { "from": "n4", "to": "n5", "label": "写分块向量", "variant": "emphasis" }
+  ]
+}

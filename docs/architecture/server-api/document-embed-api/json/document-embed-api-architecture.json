@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "文档嵌入 API 架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 600] },
+  "components": [
+    { "id": "web", "type": "frontend", "label": "Web 管理端", "pos": [50, 110], "size": [130, 60] },
+    { "id": "ep", "type": "backend", "label": "文档端点", "pos": [330, 110], "size": [150, 60] },
+    { "id": "collector", "type": "external", "label": "CollectorApi", "pos": [610, 110], "size": [150, 60] },
+    { "id": "multer", "type": "backend", "label": "multer 上传", "pos": [330, 330], "size": [140, 60] },
+    { "id": "doc", "type": "database", "label": "Document 模型", "pos": [610, 330], "size": [140, 60] },
+    { "id": "worker", "type": "backend", "label": "嵌入工作器", "pos": [880, 330], "size": [150, 60] },
+    { "id": "vectordb", "type": "external", "label": "向量数据库", "pos": [880, 110], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/endpoints document.js + workspaces.js", "wraps": ["ep", "multer", "doc", "worker"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "web", "to": "ep", "label": "上传/嵌入请求", "variant": "emphasis" },
+    { "id": "c2", "from": "ep", "to": "multer", "label": "multipart", "variant": "default", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c3", "from": "ep", "to": "collector", "label": "processDocument/Link", "variant": "emphasis" },
+    { "id": "c4", "from": "collector", "to": "doc", "label": "写文档记录", "variant": "default", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c5", "from": "doc", "to": "worker", "label": "待嵌入文件", "variant": "default" },
+    { "id": "c6", "from": "worker", "to": "vectordb", "label": "写分块向量", "variant": "dashed", "fromSide": "top", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "关键约束", "items": ["collector 离线则上传失败", "已嵌入文档不可移动", "原生嵌入器走独立 worker"] }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "读取系统设置时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 680] },
+  "participants": [
+    { "id": "e", "type": "backend", "label": "端点/中间件" },
+    { "id": "s", "type": "database", "label": "设置读取" },
+    { "id": "db", "type": "database", "label": "Prisma" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "e", "to": "s", "y": 160, "label": "isMultiUserMode()", "variant": "emphasis" },
+    { "id": "m2", "from": "s", "to": "db", "y": 240, "label": "getValueOrFallback 查询", "variant": "default" },
+    { "id": "m3", "from": "db", "to": "s", "y": 320, "label": "返回 label/value", "variant": "return" },
+    { "id": "m4", "from": "s", "to": "e", "y": 400, "label": "解析为布尔返回", "variant": "return" }
+  ]
+}

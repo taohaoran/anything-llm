@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "嵌入 widget 聊天时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 760] },
+  "participants": [
+    { "id": "w", "type": "frontend", "label": "嵌入 widget" },
+    { "id": "m", "type": "security", "label": "embed 中间件" },
+    { "id": "e", "type": "backend", "label": "embed 端点" },
+    { "id": "c", "type": "backend", "label": "embed 聊天" },
+    { "id": "d", "type": "database", "label": "EmbedChats" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "w", "to": "e", "y": 160, "label": "POST /embed/:id/stream-chat", "variant": "emphasis" },
+    { "id": "m2", "from": "e", "to": "m", "y": 230, "label": "validEmbedConfig + canRespond", "variant": "default" },
+    { "id": "m3", "from": "m", "to": "e", "y": 300, "label": "注入 embedConfig", "variant": "return" },
+    { "id": "m4", "from": "e", "to": "c", "y": 370, "label": "streamChatWithForEmbed", "variant": "emphasis" },
+    { "id": "m5", "from": "c", "to": "d", "y": 440, "label": "按 sessionId 记录", "variant": "dashed" },
+    { "id": "m6", "from": "c", "to": "w", "y": 510, "label": "SSE chunk 回流", "variant": "return" }
+  ]
+}

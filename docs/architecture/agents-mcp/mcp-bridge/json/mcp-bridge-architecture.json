@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "MCP 桥接架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "aib", "type": "backend", "label": "AIbitat 会话", "pos": [40, 80], "size": [140, 60], "tag": "宿主" },
+    { "id": "hyper", "type": "backend", "label": "MCPHypervisor", "pos": [260, 80], "size": [160, 60], "tag": "客户端管理" },
+    { "id": "client", "type": "backend", "label": "MCP Client", "pos": [500, 80], "size": [140, 60], "tag": "协议层" },
+    { "id": "stdio", "type": "external", "label": "stdio 子进程", "pos": [500, 270], "size": [150, 60], "tag": "本地 MCP server" },
+    { "id": "remote", "type": "external", "label": "SSE/HTTP 远端", "pos": [720, 270], "size": [150, 60], "tag": "远程 MCP server" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils/MCP（本仓库源码内）", "wraps": ["aib", "hyper", "client"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "aib", "to": "hyper", "label": "挂载 MCP 工具", "variant": "emphasis" },
+    { "id": "c2", "from": "hyper", "to": "client", "label": "startMCPServer", "variant": "emphasis" },
+    { "id": "c3", "from": "client", "to": "stdio", "label": "spawn 子进程", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 26 },
+    { "id": "c4", "from": "client", "to": "remote", "label": "HTTP 连接", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 26 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["引导启动 server → 列举工具 → 登记为 aibitat 函数 → 调用时经 client 转发"] }
+  ]
+}

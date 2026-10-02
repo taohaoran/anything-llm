@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "telegram 入站消息处理时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 700] },
+  "participants": [
+    { "id": "user", "type": "external", "label": "Telegram 用户" },
+    { "id": "tg", "type": "backend", "label": "telegramBot" },
+    { "id": "bgs", "type": "backend", "label": "后台 worker" },
+    { "id": "aib", "type": "backend", "label": "AIbitat" },
+    { "id": "push", "type": "external", "label": "推送服务" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "tg", "y": 160, "label": "发消息", "variant": "emphasis" },
+    { "id": "m2", "from": "tg", "to": "bgs", "y": 230, "label": "入站消息入队", "variant": "emphasis" },
+    { "id": "m3", "from": "bgs", "to": "aib", "y": 300, "label": "跑 agent 对话" },
+    { "id": "m4", "from": "aib", "to": "tg", "y": 380, "label": "回复消息", "variant": "return" },
+    { "id": "m5", "from": "bgs", "to": "push", "y": 460, "label": "任务完成通知", "variant": "dashed" },
+    { "id": "m6", "from": "push", "to": "user", "y": 530, "label": "webhook 推送", "variant": "dashed" }
+  ]
+}

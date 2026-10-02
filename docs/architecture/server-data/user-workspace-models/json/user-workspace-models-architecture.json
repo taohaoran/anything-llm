@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "用户与工作区模型架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 600] },
+  "components": [
+    { "id": "ep", "type": "backend", "label": "API 端点", "pos": [50, 230], "size": [130, 60] },
+    { "id": "user", "type": "database", "label": "users 模型", "pos": [360, 110], "size": [150, 60] },
+    { "id": "ws", "type": "database", "label": "workspaces 模型", "pos": [360, 350], "size": [160, 60] },
+    { "id": "wu", "type": "database", "label": "workspace_users", "pos": [660, 230], "size": [150, 60] },
+    { "id": "rel", "type": "database", "label": "chats/threads", "pos": [900, 230], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/models user + workspace + workspaceUsers", "wraps": ["user", "ws", "wu"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "ep", "to": "user", "label": "CRUD/配额", "variant": "emphasis" },
+    { "id": "c2", "from": "ep", "to": "ws", "label": "工作区 CRUD", "variant": "emphasis" },
+    { "id": "c3", "from": "user", "to": "wu", "label": "成员关系", "variant": "default" },
+    { "id": "c4", "from": "ws", "to": "wu", "label": "成员关系", "variant": "default" },
+    { "id": "c5", "from": "ws", "to": "rel", "label": "聊天/线程", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "模型要点", "items": ["User 含 role/suspended/配额", "Workspace 含 LLM/向量配置", "workspace_users 多对多"] }
+  ]
+}

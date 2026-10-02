@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "格式转换分发架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "psf", "type": "backend", "label": "processSingleFile", "pos": [60, 320], "size": [160, 60] },
+    { "id": "reg", "type": "backend", "label": "扩展名映射表", "pos": [380, 320], "size": [150, 60] },
+    { "id": "pdf", "type": "backend", "label": "asPDF", "pos": [680, 120], "size": [120, 50] },
+    { "id": "docx", "type": "backend", "label": "asDocx", "pos": [680, 200], "size": [120, 50] },
+    { "id": "img", "type": "backend", "label": "asImage", "pos": [680, 280], "size": [120, 50] },
+    { "id": "xlsx", "type": "backend", "label": "asXlsx", "pos": [680, 360], "size": [120, 50] },
+    { "id": "txt", "type": "backend", "label": "asTxt", "pos": [680, 440], "size": [120, 50] },
+    { "id": "doc", "type": "database", "label": "server 文档", "pos": [960, 320], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "collector/processSingleFile（本仓库内）", "wraps": ["psf", "reg", "pdf", "docx", "img", "xlsx", "txt"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "psf", "to": "reg", "variant": "emphasis" },
+    { "id": "c2", "from": "reg", "to": "pdf" },
+    { "id": "c3", "from": "reg", "to": "docx" },
+    { "id": "c4", "from": "reg", "to": "img" },
+    { "id": "c5", "from": "reg", "to": "xlsx" },
+    { "id": "c6", "from": "reg", "to": "txt" },
+    { "id": "c7", "from": "txt", "to": "doc", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["按扩展名分发 converter", "未知文本类降级 txt", "路径越界拒绝"] }
+  ]
+}

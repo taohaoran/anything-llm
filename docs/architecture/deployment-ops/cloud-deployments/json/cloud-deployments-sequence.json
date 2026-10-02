@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "云平台部署流程时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 800] },
+  "participants": [
+    { "id": "ops", "type": "external", "label": "运维" },
+    { "id": "tpl", "type": "frontend", "label": "云模板" },
+    { "id": "orch", "type": "cloud", "label": "云编排器" },
+    { "id": "pod", "type": "backend", "label": "容器" },
+    { "id": "hc", "type": "external", "label": "健康检查" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "ops", "to": "tpl", "y": 160, "label": "填 region/卷/密钥参数", "variant": "emphasis" },
+    { "id": "m2", "from": "tpl", "to": "orch", "y": 230, "label": "CloudFormation/Helm apply", "variant": "default" },
+    { "id": "m3", "from": "orch", "to": "pod", "y": 300, "label": "拉镜像起 Pod/实例", "variant": "emphasis" },
+    { "id": "m4", "from": "pod", "to": "hc", "y": 370, "label": "启动后 /api/ping", "variant": "dashed" },
+    { "id": "m5", "from": "hc", "to": "orch", "y": 440, "label": "就绪报告", "variant": "return" },
+    { "id": "m6", "from": "orch", "to": "ops", "y": 510, "label": "输出访问地址", "variant": "return" },
+    { "id": "m7", "from": "ops", "to": "pod", "y": 580, "label": "绑定持久卷与环境变量", "variant": "dashed" },
+    { "id": "m8", "from": "pod", "to": "orch", "y": 650, "label": "server+collector 常驻", "variant": "default" }
+  ]
+}

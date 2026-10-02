@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "docker-build 多阶段构建流水线", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1200, 400] },
+  "stages": [
+    { "label": "基础镜像" },
+    { "label": "架构适配" },
+    { "label": "前端构建" },
+    { "label": "后端依赖" },
+    { "label": "产物镜像" }
+  ],
+  "nodes": [
+    { "id": "base", "type": "external", "label": "ubuntu:noble", "stage": 0, "row": 0 },
+    { "id": "arch", "type": "backend", "label": "系统依赖", "stage": 1, "row": 0 },
+    { "id": "fe", "type": "frontend", "label": "前端构建", "stage": 2, "row": 0 },
+    { "id": "be", "type": "backend", "label": "后端依赖", "stage": 3, "row": 0 },
+    { "id": "img", "type": "cloud", "label": "运行镜像", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "base", "to": "arch", "label": "装 node/yarn/uvx", "variant": "emphasis", "route": "straight" },
+    { "from": "arch", "to": "fe", "label": "原生架构编译", "variant": "default", "route": "straight" },
+    { "from": "fe", "to": "be", "label": "拷 dist 与依赖", "variant": "default", "route": "straight" },
+    { "from": "be", "to": "img", "label": "合并运行时", "variant": "emphasis", "route": "straight" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "构建要点", "items": ["前端原生架构编译避 QEMU", "生产依赖剥离 devDeps", "HEALTHCHECK 探活 /api/ping"] }
+  ]
+}

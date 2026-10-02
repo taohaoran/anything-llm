@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "链接抓取时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 680] },
+  "participants": [
+    { "id": "r", "type": "backend", "label": "路由" },
+    { "id": "pl", "type": "backend", "label": "processLink" },
+    { "id": "sc", "type": "backend", "label": "scrapeGeneric" },
+    { "id": "web", "type": "external", "label": "网站" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "r", "to": "pl", "y": 170, "label": "link+headers", "variant": "emphasis" },
+    { "id": "m3", "from": "pl", "to": "sc", "y": 240, "label": "scrapeGenericUrl()", "variant": "emphasis" },
+    { "id": "m4", "from": "sc", "to": "web", "y": 310, "label": "HTTP GET" },
+    { "id": "m5", "from": "web", "to": "sc", "y": 380, "label": "HTML", "variant": "return" },
+    { "id": "m6", "from": "sc", "to": "pl", "y": 450, "label": "纯文本", "variant": "return" },
+    { "id": "m7", "from": "pl", "to": "r", "y": 520, "label": "documents", "variant": "return" }
+  ]
+}

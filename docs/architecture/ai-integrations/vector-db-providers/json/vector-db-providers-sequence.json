@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "文档写入与检索时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 820] },
+  "participants": [
+    { "id": "dm", "type": "frontend", "label": "调用方" },
+    { "id": "f", "type": "backend", "label": "工厂" },
+    { "id": "vdb", "type": "backend", "label": "LanceDb" },
+    { "id": "rk", "type": "backend", "label": "重排器" },
+    { "id": "store", "type": "database", "label": "本地存储" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "dm", "to": "f", "y": 170, "label": "getVectorDbClass()", "variant": "emphasis" },
+    { "id": "m2", "from": "f", "to": "vdb", "y": 230, "label": "new LanceDb()" },
+    { "id": "m3", "from": "f", "to": "dm", "y": 280, "label": "返回实例", "variant": "return" },
+    { "id": "m4", "from": "dm", "to": "vdb", "y": 340, "label": "addDocumentToNamespace()", "variant": "emphasis" },
+    { "id": "m5", "from": "vdb", "to": "store", "y": 400, "label": "写向量+元数据" },
+    { "id": "m6", "from": "dm", "to": "vdb", "y": 460, "label": "rerankedSimilarityResponse()", "variant": "emphasis" },
+    { "id": "m7", "from": "vdb", "to": "store", "y": 520, "label": "相似度检索" },
+    { "id": "m8", "from": "vdb", "to": "rk", "y": 580, "label": "候选重排" },
+    { "id": "m9", "from": "vdb", "to": "dm", "y": 640, "label": "topN 结果", "variant": "return" }
+  ]
+}

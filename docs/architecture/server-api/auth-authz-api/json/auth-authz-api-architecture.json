@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "认证鉴权体系架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 640] },
+  "components": [
+    { "id": "web", "type": "frontend", "label": "Web 客户端", "pos": [50, 110], "size": [130, 60] },
+    { "id": "apic", "type": "external", "label": "开发者 API 客户端", "pos": [50, 330], "size": [140, 60] },
+    { "id": "vr", "type": "security", "label": "validatedRequest", "pos": [330, 110], "size": [160, 60], "tag": "会话鉴权" },
+    { "id": "vk", "type": "security", "label": "validApiKey", "pos": [330, 330], "size": [140, 60], "tag": "API Key" },
+    { "id": "role", "type": "security", "label": "flex/strict 角色校验", "pos": [610, 110], "size": [170, 60] },
+    { "id": "jwt", "type": "backend", "label": "makeJWT/decodeJWT", "pos": [610, 330], "size": [160, 60] },
+    { "id": "user", "type": "database", "label": "User 模型", "pos": [890, 110], "size": [130, 60] },
+    { "id": "sys", "type": "database", "label": "SystemSettings", "pos": [890, 250], "size": [140, 60] },
+    { "id": "apik", "type": "database", "label": "ApiKey 模型", "pos": [890, 390], "size": [130, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils/middleware + http", "wraps": ["vr", "vk", "role", "jwt"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "web", "to": "vr", "label": "Bearer JWT", "variant": "emphasis" },
+    { "id": "c2", "from": "apic", "to": "vk", "label": "Bearer Key", "variant": "default" },
+    { "id": "c3", "from": "vr", "to": "jwt", "label": "decodeJWT 验签", "variant": "default" },
+    { "id": "c4", "from": "vr", "to": "role", "label": "多用户挂角色校验", "variant": "emphasis" },
+    { "id": "c5", "from": "role", "to": "user", "label": "按 id 取用户", "variant": "default" },
+    { "id": "c6", "from": "vr", "to": "sys", "label": "是否多用户模式", "variant": "dashed" },
+    { "id": "c7", "from": "vk", "to": "apik", "label": "校验密钥", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "双轨鉴权", "items": ["单用户: JWT 内嵌加密密码", "多用户: JWT 含用户 id", "开发者: 独立 ApiKey 表"] }
+  ]
+}

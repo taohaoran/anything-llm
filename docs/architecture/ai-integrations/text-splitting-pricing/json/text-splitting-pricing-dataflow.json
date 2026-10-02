@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "文档切分数据流", "quality_profile": "showcase", "locale": "zh-CN" },
+  "stages": [ { "label": "原始文本" }, { "label": "切分" }, { "label": "token 计数" }, { "label": "向量化" } ],
+  "nodes": [
+    { "id": "n1", "type": "frontend", "label": "纯文本", "stage": 0, "row": 0 },
+    { "id": "n2", "type": "backend", "label": "TextSplitter", "stage": 1, "row": 0 },
+    { "id": "n4", "type": "backend", "label": "TokenManager", "stage": 2, "row": 0 },
+    { "id": "n5", "type": "database", "label": "向量库", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "n1", "to": "n2", "label": "文本", "variant": "emphasis", "route": "bottom-channel" },
+    { "from": "n2", "to": "n4", "label": "chunk", "route": "bottom-channel" },
+    { "from": "n4", "to": "n5", "label": "向量", "variant": "emphasis", "route": "bottom-channel" }
+  ]
+}

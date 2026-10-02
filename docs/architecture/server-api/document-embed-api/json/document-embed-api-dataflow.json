@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "文档上传嵌入数据流", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1200, 520] },
+  "stages": [
+    { "label": "上传入口" },
+    { "label": "收集处理" },
+    { "label": "文档落库" },
+    { "label": "向量化" },
+    { "label": "向量库" }
+  ],
+  "nodes": [
+    { "id": "n1", "type": "frontend", "label": "文件/链接", "stage": 0, "row": 0 },
+    { "id": "n2", "type": "backend", "label": "multer 接收", "stage": 1, "row": 0 },
+    { "id": "n3", "type": "external", "label": "Collector 解析", "stage": 1, "row": 1 },
+    { "id": "n4", "type": "database", "label": "Document 记录", "stage": 2, "row": 0 },
+    { "id": "n5", "type": "backend", "label": "嵌入切分", "stage": 3, "row": 0 },
+    { "id": "n6", "type": "external", "label": "向量库索引", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "n1", "to": "n2", "label": "multipart", "variant": "emphasis" },
+    { "from": "n2", "to": "n3", "label": "转发", "variant": "default", "labelDy": 24 },
+    { "from": "n3", "to": "n4", "label": "写元数据", "variant": "default" },
+    { "from": "n4", "to": "n5", "label": "待嵌入", "variant": "emphasis" },
+    { "from": "n5", "to": "n6", "label": "写分块向量", "variant": "emphasis" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "/process 请求时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 720] },
+  "participants": [
+    { "id": "srv", "type": "external", "label": "server" },
+    { "id": "mw", "type": "backend", "label": "中间件" },
+    { "id": "route", "type": "backend", "label": "路由" },
+    { "id": "psf", "type": "backend", "label": "processFile" },
+    { "id": "fs", "type": "database", "label": "hotdir" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "srv", "to": "mw", "y": 170, "label": "POST /process", "variant": "emphasis" },
+    { "id": "m2", "from": "mw", "to": "route", "y": 230, "label": "校验签名" },
+    { "id": "m3", "from": "route", "to": "psf", "y": 290, "label": "processSingleFile()", "variant": "emphasis" },
+    { "id": "m4", "from": "psf", "to": "fs", "y": 350, "label": "读文件" },
+    { "id": "m5", "from": "fs", "to": "psf", "y": 410, "label": "文件内容", "variant": "return" },
+    { "id": "m6", "from": "psf", "to": "route", "y": 470, "label": "documents", "variant": "return" },
+    { "id": "m7", "from": "route", "to": "srv", "y": 530, "label": "200 JSON", "variant": "return" }
+  ]
+}

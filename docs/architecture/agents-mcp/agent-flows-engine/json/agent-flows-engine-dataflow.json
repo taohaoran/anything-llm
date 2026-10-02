@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "Agent Flows 执行数据流", "quality_profile": "showcase", "locale": "zh-CN" },
+  "stages": [
+    { "label": "初始化" },
+    { "label": "执行步骤" },
+    { "label": "变量累积" },
+    { "label": "结果输出" }
+  ],
+  "nodes": [
+    { "id": "start", "type": "backend", "label": "start 块初始化变量", "stage": 0, "row": 0 },
+    { "id": "step", "type": "backend", "label": "步骤执行器", "stage": 1, "row": 0 },
+    { "id": "vars", "type": "database", "label": "variables 变量库", "stage": 2, "row": 0 },
+    { "id": "out", "type": "external", "label": "回灌 AIbitat", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "start", "to": "step", "label": "注入初始变量", "variant": "emphasis" },
+    { "from": "step", "to": "vars", "label": "结果存变量" },
+    { "from": "vars", "to": "step", "label": "下一步取变量", "variant": "dashed" },
+    { "from": "vars", "to": "out", "label": "directOutput 短路", "variant": "emphasis" }
+  ]
+}

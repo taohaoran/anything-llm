@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "文档摄入与 RAG 数据流", "quality_profile": "standard", "locale": "zh-CN", "viewBox": [1200, 700] },
+  "stages": [
+    { "label": "数据源" },
+    { "label": "收集解析" },
+    { "label": "切分嵌入" },
+    { "label": "存储检索" },
+    { "label": "生成输出" }
+  ],
+  "nodes": [
+    { "id": "src_file", "type": "frontend", "label": "上传文件", "stage": 0, "row": 0 },
+    { "id": "src_link", "type": "frontend", "label": "网页链接", "stage": 0, "row": 1 },
+    { "id": "src_raw", "type": "frontend", "label": "纯文本/音频", "stage": 0, "row": 2 },
+
+    { "id": "col_srv", "type": "backend", "label": "Collector 服务", "stage": 1, "row": 0 },
+    { "id": "col_conv", "type": "backend", "label": "格式转换", "stage": 1, "row": 1 },
+
+    { "id": "split", "type": "backend", "label": "TextSplitter", "stage": 2, "row": 0 },
+    { "id": "embed", "type": "cloud", "label": "嵌入引擎", "stage": 2, "row": 1 },
+
+    { "id": "vec", "type": "database", "label": "向量数据库", "stage": 3, "row": 0 },
+    { "id": "sql", "type": "database", "label": "SQLite 元数据", "stage": 3, "row": 1 },
+
+    { "id": "llm", "type": "cloud", "label": "LLM 推理", "stage": 4, "row": 0 },
+    { "id": "fe", "type": "frontend", "label": "前端渲染", "stage": 4, "row": 1 }
+  ],
+  "flows": [
+    { "from": "src_file", "to": "col_srv", "label": "上传", "variant": "emphasis", "route": "straight" },
+    { "from": "src_link", "to": "col_srv", "label": "URL", "variant": "default", "route": "vertical-channel" },
+    { "from": "src_raw", "to": "col_srv", "label": "文本", "variant": "default", "route": "vertical-channel" },
+    { "from": "col_srv", "to": "col_conv", "label": "解析", "variant": "default", "route": "straight", "labelDy": 24 },
+    { "from": "col_conv", "to": "split", "label": "纯文本", "variant": "emphasis", "route": "straight" },
+    { "from": "split", "to": "embed", "label": "chunk", "variant": "default", "route": "straight", "labelDy": 24 },
+    { "from": "embed", "to": "vec", "label": "向量写入", "variant": "emphasis", "route": "straight" },
+    { "from": "vec", "to": "llm", "label": "检索 top-k", "variant": "emphasis", "route": "straight" },
+    { "from": "sql", "to": "llm", "label": "上下文", "variant": "dashed", "route": "vertical-channel" },
+    { "from": "llm", "to": "fe", "label": "流式响应", "variant": "emphasis", "route": "straight", "labelDy": 24 }
+  ]
+}

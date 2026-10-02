@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "open-computer 服务层架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "routes", "type": "backend", "label": "API 路由", "pos": [40, 80], "size": [130, 60], "tag": "HTTP 入口" },
+    { "id": "svc", "type": "backend", "label": "interface-service", "pos": [250, 80], "size": [160, 60], "tag": "会话编排" },
+    { "id": "pi", "type": "backend", "label": "pi agent 进程", "pos": [500, 80], "size": [150, 60], "tag": "子进程 RPC" },
+    { "id": "ext", "type": "backend", "label": "能力扩展", "pos": [250, 270], "size": [160, 60], "tag": "浏览器/桌面/bash" },
+    { "id": "sess", "type": "database", "label": "会话状态", "pos": [500, 270], "size": [150, 60], "tag": "hypervisor" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "open-computer/services（本仓库源码内）", "wraps": ["routes", "svc", "pi", "ext", "sess"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "routes", "to": "svc", "label": "HTTP 请求", "variant": "emphasis" },
+    { "id": "c2", "from": "svc", "to": "pi", "label": "stdin RPC", "variant": "emphasis" },
+    { "id": "c3", "from": "svc", "to": "ext", "label": "调用工具", "fromSide": "bottom", "toSide": "top", "labelDy": 26 },
+    { "id": "c4", "from": "svc", "to": "sess", "label": "读写状态", "fromSide": "bottom", "toSide": "top", "labelDy": 26 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["HTTP 入口 → 编排会话 → 驱动 pi agent → 经扩展操作桌面/浏览器"] }
+  ]
+}

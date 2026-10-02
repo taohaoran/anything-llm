@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": { "title": "单轮 Agent 工具循环状态机", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1030, 620] },
+  "lanes": [
+    { "id": "main", "label": "对话相位" },
+    { "id": "tools", "label": "工具事件" }
+  ],
+  "states": [
+    { "id": "start", "type": "start", "label": "start 入队", "lane": "main", "col": 0 },
+    { "id": "reply", "type": "active", "label": "reply 推理中", "lane": "main", "col": 1 },
+    { "id": "done", "type": "success", "label": "terminate 结束", "lane": "main", "col": 2 },
+    { "id": "tool", "type": "active", "label": "执行工具", "lane": "tools", "col": 0, "tag": "循环" }
+  ],
+  "transitions": [
+    { "from": "start", "to": "reply", "label": "chat()", "labelDy": 55 },
+    { "from": "reply", "to": "done", "label": "TERMINATE/达上限", "labelAt": [325, 208] },
+    { "from": "reply", "to": "tool" },
+    { "from": "tool", "to": "reply" }
+  ]
+}

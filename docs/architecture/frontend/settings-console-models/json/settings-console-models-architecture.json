@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "settings-console-models 设置控制台架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "user", "type": "external", "label": "管理员", "pos": [60, 280], "size": [110, 60] },
+    { "id": "sidebar", "type": "frontend", "label": "SettingsSidebar", "pos": [230, 280], "size": [130, 60] },
+    { "id": "page", "type": "frontend", "label": "设置页组", "pos": [420, 280], "size": [120, 60], "tag": "LLM/向量库/用户" },
+    { "id": "picker", "type": "frontend", "label": "LLMSelection", "pos": [600, 280], "size": [130, 60], "tag": "40+ provider 选项" },
+    { "id": "model", "type": "frontend", "label": "models/system", "pos": [780, 280], "size": [120, 60] },
+    { "id": "api", "type": "external", "label": "后端 API", "pos": [950, 280], "size": [120, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "React 系统设置 UI", "wraps": ["sidebar", "page", "picker", "model"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "sidebar", "label": "打开设置", "variant": "emphasis" },
+    { "id": "c2", "from": "sidebar", "to": "page", "label": "导航页签", "variant": "default" },
+    { "id": "c3", "from": "page", "to": "picker", "label": "选 provider", "variant": "emphasis" },
+    { "id": "c4", "from": "picker", "to": "model", "label": "保存配置", "variant": "default" },
+    { "id": "c5", "from": "model", "to": "api", "label": "REST 调用", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "控制台要点", "items": ["Sidebar 导航全部设置页", "40+ LLM provider 选项组件", "Admin/Manager 路由守卫分级"] }
+  ]
+}

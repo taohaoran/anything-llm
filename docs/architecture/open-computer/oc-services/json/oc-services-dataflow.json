@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "agent 操作桌面数据流", "quality_profile": "showcase", "locale": "zh-CN" },
+  "stages": [
+    { "label": "决策" },
+    { "label": "工具调用" },
+    { "label": "环境操作" },
+    { "label": "结果回传" }
+  ],
+  "nodes": [
+    { "id": "pi", "type": "backend", "label": "pi agent", "stage": 0, "row": 0 },
+    { "id": "ext", "type": "backend", "label": "扩展工具", "stage": 1, "row": 0 },
+    { "id": "env", "type": "external", "label": "浏览器/桌面/OS", "stage": 2, "row": 0 },
+    { "id": "back", "type": "backend", "label": "观测结果", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "pi", "to": "ext", "label": "工具调用", "variant": "emphasis" },
+    { "from": "ext", "to": "env", "label": "动作", "variant": "emphasis" },
+    { "from": "env", "to": "back", "label": "截图/输出" }
+  ]
+}

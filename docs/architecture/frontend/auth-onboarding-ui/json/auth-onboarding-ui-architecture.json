@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "auth-onboarding-ui 认证引导架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "user", "type": "external", "label": "访客/新用户", "pos": [60, 280], "size": [120, 60] },
+    { "id": "login", "type": "frontend", "label": "Login 登录页", "pos": [250, 280], "size": [130, 60] },
+    { "id": "pwd", "type": "frontend", "label": "PasswordModal", "pos": [460, 280], "size": [130, 60], "tag": "单机/多用户双表单" },
+    { "id": "model", "type": "frontend", "label": "System 模型层", "pos": [670, 280], "size": [130, 60] },
+    { "id": "api", "type": "external", "label": "后端认证 API", "pos": [880, 280], "size": [130, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "React 认证与引导 UI", "wraps": ["login", "pwd", "model"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "login", "label": "访问登录", "variant": "emphasis" },
+    { "id": "c2", "from": "login", "to": "pwd", "label": "渲染密码表单", "variant": "default" },
+    { "id": "c3", "from": "pwd", "to": "model", "label": "checkAuth", "variant": "emphasis" },
+    { "id": "c4", "from": "model", "to": "api", "label": "认证 REST", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "认证要点", "items": ["单机/多用户双表单", "Simple SSO 自动跳转", "未完成则跳五步向导"] }
+  ]
+}

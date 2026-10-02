@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "登录与引导完成时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 800] },
+  "participants": [
+    { "id": "user", "type": "external", "label": "访客" },
+    { "id": "login", "type": "frontend", "label": "Login 页" },
+    { "id": "pwd", "type": "frontend", "label": "PasswordModal" },
+    { "id": "model", "type": "frontend", "label": "System 模型" },
+    { "id": "api", "type": "external", "label": "后端 API" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "login", "y": 160, "label": "访问 /login", "variant": "emphasis" },
+    { "id": "m2", "from": "login", "to": "model", "y": 228, "label": "keys() + needsAuthCheck()", "variant": "default" },
+    { "id": "m3", "from": "model", "to": "api", "y": 296, "label": "GET /setup-complete", "variant": "default" },
+    { "id": "m4", "from": "api", "to": "login", "y": 364, "label": "SSO 配置 / 认证模式", "variant": "return" },
+    { "id": "m5", "from": "login", "to": "pwd", "y": 432, "label": "SSO 关闭渲染密码表单", "variant": "default" },
+    { "id": "m6", "from": "pwd", "to": "model", "y": 500, "label": "checkAuth(凭据)", "variant": "emphasis" },
+    { "id": "m7", "from": "model", "to": "api", "y": 568, "label": "POST 登录校验", "variant": "default" },
+    { "id": "m8", "from": "api", "to": "model", "y": 636, "label": "返回会话 token", "variant": "return" },
+    { "id": "m9", "from": "model", "to": "user", "y": 704, "label": "写 localStorage 跳首页", "variant": "return" }
+  ]
+}

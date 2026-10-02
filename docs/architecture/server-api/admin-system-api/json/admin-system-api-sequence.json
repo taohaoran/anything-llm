@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "管理员创建用户时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 760] },
+  "participants": [
+    { "id": "a", "type": "frontend", "label": "管理员" },
+    { "id": "g", "type": "security", "label": "角色守卫" },
+    { "id": "e", "type": "backend", "label": "管理端点" },
+    { "id": "u", "type": "database", "label": "User 模型" },
+    { "id": "log", "type": "backend", "label": "EventLogs" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "a", "to": "g", "y": 160, "label": "POST /admin/users/new", "variant": "emphasis" },
+    { "id": "m2", "from": "g", "to": "e", "y": 230, "label": "admin 角色校验通过", "variant": "default" },
+    { "id": "m3", "from": "e", "to": "u", "y": 300, "label": "bcrypt 哈希后创建用户", "variant": "default" },
+    { "id": "m4", "from": "u", "to": "e", "y": 370, "label": "返回新用户", "variant": "return" },
+    { "id": "m5", "from": "e", "to": "log", "y": 440, "label": "记录用户创建事件", "variant": "dashed" },
+    { "id": "m6", "from": "e", "to": "a", "y": 510, "label": "返回用户列表", "variant": "return" }
+  ]
+}

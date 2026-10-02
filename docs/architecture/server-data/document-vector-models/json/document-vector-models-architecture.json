@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "文档与向量模型架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 560] },
+  "components": [
+    { "id": "ep", "type": "backend", "label": "文档端点", "pos": [50, 230], "size": [130, 60] },
+    { "id": "wd", "type": "database", "label": "workspace_documents", "pos": [330, 110], "size": [180, 60] },
+    { "id": "dv", "type": "database", "label": "document_vectors", "pos": [620, 110], "size": [160, 60] },
+    { "id": "pf", "type": "database", "label": "workspace_parsed_files", "pos": [330, 360], "size": [180, 60] },
+    { "id": "vdb", "type": "external", "label": "外部向量库", "pos": [620, 360], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/models documents + vectors", "wraps": ["wd", "dv"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "ep", "to": "wd", "label": "增删查", "variant": "emphasis" },
+    { "id": "c2", "from": "wd", "to": "dv", "label": "docId 关联", "variant": "default" },
+    { "id": "c3", "from": "dv", "to": "vdb", "label": "向量映射", "labelDy": 20, "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c4", "from": "ep", "to": "pf", "label": "解析文件记录", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "模型要点", "items": ["workspace_documents 记录工作区文档", "document_vectors 映射向量库 id", "向量本体在外部向量库"] }
+  ]
+}

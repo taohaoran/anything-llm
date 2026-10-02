@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Agent 工具集注册与执行架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "handler", "type": "backend", "label": "AgentHandler", "pos": [40, 80], "size": [140, 60], "tag": "装配" },
+    { "id": "registry", "type": "backend", "label": "plugins 目录", "pos": [250, 80], "size": [140, 60], "tag": "工具插件" },
+    { "id": "fnmap", "type": "database", "label": "functions Map", "pos": [460, 80], "size": [140, 60], "tag": "已登记工具" },
+    { "id": "provider", "type": "cloud", "label": "LLM Provider", "pos": [670, 80], "size": [140, 60], "tag": "推理" },
+    { "id": "web", "type": "backend", "label": "网页工具组", "pos": [120, 270], "size": [150, 60], "tag": "搜索/抓取" },
+    { "id": "fs", "type": "backend", "label": "文件工具组", "pos": [350, 270], "size": [150, 60], "tag": "读写/建文件" },
+    { "id": "int", "type": "backend", "label": "记忆与系统工具", "pos": [580, 270], "size": [160, 60], "tag": "RAG/计划/图像" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils/agents/aibitat/plugins（本仓库源码内）", "wraps": ["registry", "web", "fs", "int"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "handler", "to": "registry", "label": "按需挂载", "variant": "emphasis" },
+    { "id": "c2", "from": "registry", "to": "fnmap" },
+    { "id": "c3", "from": "fnmap", "to": "provider", "label": "随请求传入", "variant": "emphasis" },
+    { "id": "c4", "from": "provider", "to": "fnmap", "label": "functionCall", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["插件 setup 登记工具 → 随请求给 LLM → LLM 回 functionCall → handler 执行"] }
+  ]
+}

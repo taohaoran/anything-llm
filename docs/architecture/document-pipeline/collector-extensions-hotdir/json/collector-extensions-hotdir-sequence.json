@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "仓库加载时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 680] },
+  "participants": [
+    { "id": "r", "type": "backend", "label": "扩展路由" },
+    { "id": "rl", "type": "backend", "label": "RepoLoader" },
+    { "id": "gh", "type": "external", "label": "GitHub" },
+    { "id": "doc", "type": "database", "label": "文档存储" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "r", "to": "rl", "y": 170, "label": "resolveRepoLoader()", "variant": "emphasis" },
+    { "id": "m2", "from": "rl", "to": "gh", "y": 230, "label": "拉仓库内容" },
+    { "id": "m3", "from": "gh", "to": "rl", "y": 290, "label": "文件树", "variant": "return" },
+    { "id": "m4", "from": "rl", "to": "doc", "y": 350, "label": "写文档" },
+    { "id": "m5", "from": "doc", "to": "rl", "y": 410, "label": "完成", "variant": "return" },
+    { "id": "m6", "from": "rl", "to": "r", "y": 470, "label": "data", "variant": "return" }
+  ]
+}

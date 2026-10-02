@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "请求路由装配架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 720] },
+  "components": [
+    { "id": "fe", "type": "frontend", "label": "前端 SPA", "pos": [60, 120], "size": [140, 60] },
+    { "id": "client", "type": "external", "label": "API 客户端", "pos": [60, 300], "size": [140, 60] },
+    { "id": "app", "type": "backend", "label": "Express app", "pos": [360, 210], "size": [140, 60], "tag": "全局中间件" },
+    { "id": "apiRouter", "type": "backend", "label": "/api 子路由", "pos": [620, 210], "size": [140, 60] },
+    { "id": "groups", "type": "backend", "label": "端点模块组", "pos": [880, 210], "size": [150, 60], "tag": "20+ 函数" },
+    { "id": "boot", "type": "backend", "label": "bootHTTP/SSL", "pos": [360, 430], "size": [150, 60] },
+    { "id": "static", "type": "backend", "label": "静态资源托管", "pos": [620, 430], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/index.js 装配层", "wraps": ["app", "apiRouter", "groups", "boot", "static"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "fe", "to": "app", "label": "页面/接口请求", "variant": "emphasis" },
+    { "id": "c2", "from": "client", "to": "app", "label": "Bearer Key", "variant": "default" },
+    { "id": "c3", "from": "app", "to": "apiRouter", "label": "挂载 /api", "variant": "emphasis" },
+    { "id": "c4", "from": "apiRouter", "to": "groups", "label": "分发端点", "variant": "emphasis" },
+    { "id": "c5", "from": "boot", "to": "app", "label": "listen:3001", "variant": "default", "fromSide": "top", "toSide": "bottom" },
+    { "id": "c6", "from": "app", "to": "static", "label": "生产静态", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "装配要点", "items": ["全局中间件先于路由注册", "20+ 端点函数挂 apiRouter", "developerEndpoints 双参挂 Swagger"] }
+  ]
+}

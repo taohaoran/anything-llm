@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "链接抓取数据流", "quality_profile": "showcase", "locale": "zh-CN" },
+  "stages": [ { "label": "URL 输入" }, { "label": "HTTP 抓取" }, { "label": "HTML 清洗" }, { "label": "文档输出" } ],
+  "nodes": [
+    { "id": "n1", "type": "frontend", "label": "URL", "stage": 0, "row": 0 },
+    { "id": "n2", "type": "external", "label": "目标网站", "stage": 1, "row": 0 },
+    { "id": "n3", "type": "backend", "label": "htmlToMarkdown", "stage": 2, "row": 0 },
+    { "id": "n4", "type": "database", "label": "server 文档", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "n1", "to": "n2", "label": "请求", "variant": "emphasis", "route": "bottom-channel" },
+    { "from": "n2", "to": "n3", "label": "HTML", "route": "bottom-channel" },
+    { "from": "n3", "to": "n4", "label": "Markdown", "variant": "emphasis", "route": "bottom-channel" }
+  ]
+}

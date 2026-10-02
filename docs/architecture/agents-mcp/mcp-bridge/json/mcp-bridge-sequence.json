@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "MCP 引导与工具调用时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 720] },
+  "participants": [
+    { "id": "aib", "type": "backend", "label": "AIbitat" },
+    { "id": "hyper", "type": "backend", "label": "MCPHypervisor" },
+    { "id": "client", "type": "backend", "label": "MCP Client" },
+    { "id": "srv", "type": "external", "label": "MCP Server" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "aib", "to": "hyper", "y": 160, "label": "bootMCPServers(配置)", "variant": "emphasis" },
+    { "id": "m2", "from": "hyper", "to": "client", "y": 220, "label": "new Client + connect", "variant": "emphasis" },
+    { "id": "m3", "from": "client", "to": "srv", "y": 280, "label": "initialize / tools/list", "variant": "dashed" },
+    { "id": "m4", "from": "client", "to": "hyper", "y": 340, "label": "返回工具清单", "variant": "return" },
+    { "id": "m5", "from": "hyper", "to": "aib", "y": 400, "label": "登记为 aibitat.function", "variant": "return" },
+    { "id": "m6", "from": "aib", "to": "client", "y": 470, "label": "调用 MCP 工具(args)", "variant": "emphasis" },
+    { "id": "m7", "from": "client", "to": "srv", "y": 530, "label": "tools/call", "variant": "dashed" },
+    { "id": "m8", "from": "client", "to": "aib", "y": 590, "label": "工具结果回灌", "variant": "return" }
+  ]
+}

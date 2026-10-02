@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "工作区聊天 API 架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 720] },
+  "components": [
+    { "id": "web", "type": "frontend", "label": "Web 聊天端", "pos": [60, 110], "size": [130, 60] },
+    { "id": "mw", "type": "security", "label": "工作区校验", "pos": [340, 110], "size": [140, 60] },
+    { "id": "ep", "type": "backend", "label": "stream-chat 端点", "pos": [610, 110], "size": [160, 60] },
+    { "id": "stream", "type": "backend", "label": "streamChatWithWorkspace", "pos": [560, 330], "size": [190, 60] },
+    { "id": "ws", "type": "database", "label": "Workspace 模型", "pos": [260, 540], "size": [140, 60] },
+    { "id": "chats", "type": "database", "label": "WorkspaceChats", "pos": [560, 540], "size": [150, 60] },
+    { "id": "llm", "type": "external", "label": "LLM / 向量库", "pos": [880, 330], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/endpoints chat.js + workspaces.js", "wraps": ["mw", "ep", "stream"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "web", "to": "mw", "label": "POST stream-chat", "variant": "emphasis" },
+    { "id": "c2", "from": "mw", "to": "ep", "label": "注入 workspace", "variant": "default" },
+    { "id": "c3", "from": "ep", "to": "stream", "label": "委托流式聊天", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c4", "from": "mw", "to": "ws", "label": "按 slug 查", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c5", "from": "stream", "to": "llm", "label": "检索+补全", "variant": "default" },
+    { "id": "c6", "from": "stream", "to": "chats", "label": "落库记录", "variant": "dashed", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "聊天端点族", "items": ["流式聊天/会话线程", "历史/反馈/置顶/TTS", "SSE chunk 回流前端"] }
+  ]
+}

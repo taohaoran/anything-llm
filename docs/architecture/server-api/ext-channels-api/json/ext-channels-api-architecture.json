@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "外部渠道接入架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1100, 620] },
+  "components": [
+    { "id": "emb", "type": "frontend", "label": "嵌入聊天组件", "pos": [40, 90], "size": [140, 55] },
+    { "id": "tg", "type": "external", "label": "Telegram 用户", "pos": [40, 230], "size": [140, 55] },
+    { "id": "mob", "type": "external", "label": "移动/WebPush", "pos": [40, 370], "size": [140, 55] },
+    { "id": "e1", "type": "backend", "label": "embed 端点", "pos": [340, 90], "size": [140, 55] },
+    { "id": "e2", "type": "backend", "label": "ext 连接器", "pos": [340, 230], "size": [140, 55] },
+    { "id": "e3", "type": "backend", "label": "telegram 管理", "pos": [340, 370], "size": [140, 55] },
+    { "id": "chat", "type": "backend", "label": "聊天核心", "pos": [640, 90], "size": [150, 55] },
+    { "id": "out", "type": "external", "label": "外部服务", "pos": [900, 230], "size": [140, 55] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/endpoints embed + extensions + telegram", "wraps": ["e1", "e2", "e3", "chat"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "emb", "to": "e1", "label": "SSE 聊天", "variant": "emphasis" },
+    { "id": "c2", "from": "tg", "to": "e3", "label": "Webhook", "variant": "default", "fromSide": "bottom", "toSide": "left" },
+    { "id": "c3", "from": "mob", "to": "e3", "label": "推送设备", "variant": "dashed" },
+    { "id": "c4", "from": "e1", "to": "chat", "label": "embed 聊天", "variant": "default" },
+    { "id": "c5", "from": "e2", "to": "out", "label": "抓取同步", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "渠道族", "items": ["网页嵌入 widget", "Telegram/移动推送", "Git/Confluence 连接器"] }
+  ]
+}

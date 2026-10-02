@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "i18n-locales 国际化架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户浏览器", "pos": [60, 280], "size": [120, 60] },
+    { "id": "detector", "type": "frontend", "label": "LanguageDetector", "pos": [250, 280], "size": [140, 60] },
+    { "id": "i18n", "type": "frontend", "label": "i18next 实例", "pos": [460, 280], "size": [130, 60] },
+    { "id": "res", "type": "database", "label": "语言包资源", "pos": [660, 280], "size": [140, 60], "tag": "en 基准+30 语言" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "前端 i18n 体系", "wraps": ["detector", "i18n", "res"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "detector", "label": "浏览器语言", "variant": "emphasis" },
+    { "id": "c2", "from": "detector", "to": "i18n", "label": "检测 lng", "variant": "default" },
+    { "id": "c3", "from": "i18n", "to": "res", "label": "加载字典", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "i18n 要点", "items": ["en/common.js 为基准", "组件经 useTranslation 调 t()", "verify:translations 校验键"] }
+  ]
+}

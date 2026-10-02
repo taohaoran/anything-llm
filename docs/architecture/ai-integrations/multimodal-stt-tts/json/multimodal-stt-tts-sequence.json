@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "STT 语音转写时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 680] },
+  "participants": [
+    { "id": "cli", "type": "frontend", "label": "客户端" },
+    { "id": "f", "type": "backend", "label": "STT 工厂" },
+    { "id": "stt", "type": "backend", "label": "STT 适配" },
+    { "id": "api", "type": "external", "label": "转写 API" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "cli", "to": "f", "y": 170, "label": "上传音频", "variant": "emphasis" },
+    { "id": "m2", "from": "f", "to": "stt", "y": 230, "label": "new STT 适配" },
+    { "id": "m3", "from": "f", "to": "cli", "y": 280, "label": "返回实例", "variant": "return" },
+    { "id": "m4", "from": "cli", "to": "stt", "y": 340, "label": "transcribe(音频)", "variant": "emphasis" },
+    { "id": "m5", "from": "stt", "to": "api", "y": 400, "label": "音频请求" },
+    { "id": "m6", "from": "api", "to": "stt", "y": 460, "label": "转写文本", "variant": "return" },
+    { "id": "m7", "from": "stt", "to": "cli", "y": 520, "label": "文本结果", "variant": "return" }
+  ]
+}

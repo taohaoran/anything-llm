@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "文件解析数据流", "quality_profile": "showcase", "locale": "zh-CN" },
+  "stages": [ { "label": "上传文件" }, { "label": "类型分发" }, { "label": "格式解析" }, { "label": "文档输出" } ],
+  "nodes": [
+    { "id": "n1", "type": "frontend", "label": "hotdir 文件", "stage": 0, "row": 0 },
+    { "id": "n2", "type": "backend", "label": "扩展名映射", "stage": 1, "row": 0 },
+    { "id": "n3", "type": "backend", "label": "converter", "stage": 2, "row": 0 },
+    { "id": "n4", "type": "database", "label": "server 文档", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "n1", "to": "n2", "label": "文件", "variant": "emphasis", "route": "bottom-channel" },
+    { "from": "n2", "to": "n3", "label": "转换器", "route": "bottom-channel" },
+    { "from": "n3", "to": "n4", "label": "文本", "variant": "emphasis", "route": "bottom-channel" }
+  ]
+}

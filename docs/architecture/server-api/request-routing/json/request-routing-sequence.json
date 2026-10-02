@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "单次 API 请求生命周期时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 820] },
+  "participants": [
+    { "id": "c", "type": "external", "label": "客户端" },
+    { "id": "mw", "type": "backend", "label": "全局中间件" },
+    { "id": "r", "type": "backend", "label": "路由分发" },
+    { "id": "guard", "type": "security", "label": "路由守卫" },
+    { "id": "h", "type": "backend", "label": "处理函数" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "c", "to": "mw", "y": 180, "label": "HTTP 请求", "variant": "emphasis" },
+    { "id": "m2", "from": "mw", "to": "r", "y": 260, "label": "cors/bodyParser 解析后放行", "variant": "default" },
+    { "id": "m3", "from": "r", "to": "guard", "y": 340, "label": "命中路由组挂守卫", "variant": "default" },
+    { "id": "m4", "from": "guard", "to": "h", "y": 420, "label": "Session/Key 校验通过", "variant": "emphasis" },
+    { "id": "m5", "from": "h", "to": "r", "y": 500, "label": "查库/调外部依赖", "variant": "return" },
+    { "id": "m6", "from": "h", "to": "c", "y": 580, "label": "JSON / 流式响应", "variant": "return" },
+    { "id": "m7", "from": "guard", "to": "c", "y": 660, "label": "鉴权失败返回 403", "variant": "return" }
+  ]
+}

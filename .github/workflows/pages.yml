@@ -1,0 +1,75 @@
+# GitHub Pages 部署 workflow（GitHub Actions 发布源）
+# 部署根: docs；内容源严格四级优先级（docs_archify/architecture_improve → docs_archify/architecture → docs/architecture_improve → docs/architecture）
+# 导览与渲染强制: 选源后运行 scripts/build-docs-html.py（md→html + 三级中文导览 index.html + 左上角返回按钮）
+name: Deploy architecture docs to GitHub Pages
+
+on:
+  push:
+    branches: [feat-docs-archify-20261003]
+    paths:
+      - 'docs/**'
+      - 'docs-archify/**'
+      - 'docs_archify/**'
+      - 'scripts/build-docs-html.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # ---- 内容源严格四级优先级选源：archify 根下优先/回退子目录 → 部署根下优先/回退子目录 → 均无则回退部署根 ----
+      - name: Build site content (strict 4-level source priority)
+        run: |
+          set -euo pipefail
+          rm -rf site && mkdir -p site
+          SRC=""
+          ARCH_ROOT=""
+          if [ -d "docs_archify" ]; then ARCH_ROOT="docs_archify"
+          elif [ -d "docs-archify" ]; then ARCH_ROOT="docs-archify"
+          fi
+          if [ -n "$ARCH_ROOT" ] && [ -d "$ARCH_ROOT/architecture_improve" ]; then
+            SRC="$ARCH_ROOT/architecture_improve"
+          elif [ -n "$ARCH_ROOT" ] && [ -d "$ARCH_ROOT/architecture" ]; then
+            SRC="$ARCH_ROOT/architecture"
+          elif [ -d "docs/architecture_improve" ]; then
+            SRC="docs/architecture_improve"
+          elif [ -d "docs/architecture" ]; then
+            SRC="docs/architecture"
+          fi
+          if [ -n "$SRC" ]; then
+            echo "==> $SRC found -> deploying its content strictly"
+            cp -R "$SRC/." site/
+          else
+            echo "==> none of the priority subdirs found -> deploying docs root"
+            cp -R docs/. site/
+          fi
+          # ---- md 默认转 html + 强制生成导览 index.md（链接全部 md 与 html）并渲染为 index.html ----
+          pip install --quiet markdown
+          python3 scripts/build-docs-html.py site --site-name "AnythingLLM 架构文档" --group-label "agents-mcp=智能体与MCP|ai-integrations=AI集成|deployment-ops=部署与运维|document-pipeline=文档管道|frontend=前端|open-computer=Open Computer|server-api=服务端API|server-data=服务端数据" --label-map "system=系统|system-agent=系统智能体|system-chat=系统聊天|system-rag=系统RAG|facts=事实记录|_exploration=探索记录|agents-mcp=智能体与MCP|ai-integrations=AI集成|deployment-ops=部署与运维|document-pipeline=文档管道|frontend=前端|open-computer=Open Computer|server-api=服务端API|server-data=服务端数据|agent-flows-engine=智能体流程引擎|agent-runtime=智能体运行时|agent-tools=智能体工具|mcp-bridge=MCP桥接|memory-external-channels=外部渠道记忆|embedding-engines-rerankers=向量化与重排|llm-providers=LLM服务商|multimodal-stt-tts=多模态语音|text-splitting-pricing=文本切分与计费|vector-db-providers=向量数据库|cloud-deployments=云部署|docker-build=Docker构建|i18n-locales=国际化本地化|collector-extensions-hotdir=收集器扩展热目录|collector-server-core=收集器核心|document-manager-jobs=文档管理任务|file-conversion=文件转换|link-scraping=链接抓取|raw-text-audio=文本与音频摄取|app-shell=应用外壳|auth-onboarding-ui=登录引导界面|chat-interface=聊天界面|settings-console-models=设置与模型控制台|workspace-admin-ui=工作区管理界面|oc-cli=OC命令行|oc-master=OC主控|oc-services=OC服务|admin-system-api=管理系统API|agent-mcp-api=智能体MCP API|auth-authz-api=认证授权API|document-embed-api=文档嵌入API|ext-channels-api=外部渠道API|request-routing=请求路由|workspace-chat-api=工作区聊天API|auth-settings-models=认证设置模型|document-vector-models=文档向量模型|jobs-memory-models=任务记忆模型|prisma-schema=Prisma数据模型|user-workspace-models=用户工作区模型"
+          touch site/.nojekyll
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

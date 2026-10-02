@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "open-computer 主控编排架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "cli", "type": "backend", "label": "oc CLI", "pos": [40, 80], "size": [130, 60], "tag": "命令" },
+    { "id": "vm", "type": "backend", "label": "VMManager vm.ts", "pos": [250, 80], "size": [160, 60], "tag": "生命周期" },
+    { "id": "qemu", "type": "external", "label": "qemu/lima VM", "pos": [500, 80], "size": [150, 60], "tag": "虚拟机" },
+    { "id": "cfg", "type": "database", "label": "config/状态文件", "pos": [250, 270], "size": [160, 60], "tag": "持久化" },
+    { "id": "ssh", "type": "external", "label": "SSH 通道", "pos": [500, 270], "size": [150, 60], "tag": "连入 VM" },
+    { "id": "svc", "type": "backend", "label": "interface-service", "pos": [710, 270], "size": [150, 60], "tag": "服务层" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "open-computer/cli/src（本仓库源码内）", "wraps": ["cli", "vm", "cfg"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "cli", "to": "vm", "label": "start/stop", "variant": "emphasis" },
+    { "id": "c2", "from": "vm", "to": "qemu", "label": "拉起 VM", "variant": "emphasis" },
+    { "id": "c3", "from": "vm", "to": "cfg", "label": "读写状态", "fromSide": "bottom", "toSide": "top", "labelDy": 26 },
+    { "id": "c4", "from": "vm", "to": "ssh", "label": "建立通道", "fromSide": "bottom", "toSide": "top", "labelDy": 26 },
+    { "id": "c5", "from": "ssh", "to": "svc", "label": "转发服务", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["CLI → VMManager 拉起 VM → SSH 连入 → 转发并拉起 interface-service"] }
+  ]
+}

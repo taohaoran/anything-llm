@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "音频转码数据流", "quality_profile": "showcase", "locale": "zh-CN" },
+  "stages": [ { "label": "音频文件" }, { "label": "路径校验" }, { "label": "ffmpeg 转码" }, { "label": "WAV 输出" } ],
+  "nodes": [
+    { "id": "n1", "type": "frontend", "label": "音频", "stage": 0, "row": 0 },
+    { "id": "n2", "type": "backend", "label": "isWithin 校验", "stage": 1, "row": 0 },
+    { "id": "n3", "type": "external", "label": "ffmpeg", "stage": 2, "row": 0 },
+    { "id": "n4", "type": "database", "label": "16k WAV", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "n1", "to": "n2", "label": "文件", "variant": "emphasis", "route": "bottom-channel" },
+    { "from": "n2", "to": "n3", "label": "转码", "route": "bottom-channel" },
+    { "from": "n3", "to": "n4", "label": "WAV", "variant": "emphasis", "route": "bottom-channel" }
+  ]
+}

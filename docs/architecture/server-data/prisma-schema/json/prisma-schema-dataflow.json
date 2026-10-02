@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "数据访问路径数据流", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1200, 420] },
+  "stages": [
+    { "label": "业务请求" },
+    { "label": "模型封装" },
+    { "label": "Prisma Client" },
+    { "label": "数据库" }
+  ],
+  "nodes": [
+    { "id": "n1", "type": "backend", "label": "API 端点", "stage": 0, "row": 0 },
+    { "id": "n2", "type": "backend", "label": "models/ 方法", "stage": 1, "row": 0 },
+    { "id": "n3", "type": "backend", "label": "生成的 client", "stage": 2, "row": 0 },
+    { "id": "n4", "type": "database", "label": "SQLite 表", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "n1", "to": "n2", "label": "业务调用", "variant": "emphasis" },
+    { "from": "n2", "to": "n3", "label": "类型化查询", "variant": "emphasis" },
+    { "from": "n3", "to": "n4", "label": "SQL 执行", "variant": "default" }
+  ]
+}

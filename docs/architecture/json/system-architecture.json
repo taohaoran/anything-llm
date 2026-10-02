@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "anything-llm 系统架构图", "quality_profile": "standard", "locale": "zh-CN", "viewBox": [1100, 780] },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户浏览器", "pos": [60, 80], "size": [140, 56] },
+    { "id": "frontend", "type": "frontend", "label": "前端 SPA", "sublabel": "React + Vite", "pos": [340, 80], "size": [160, 56] },
+
+    { "id": "server", "type": "backend", "label": "Server API", "sublabel": "Express + Prisma", "pos": [340, 260], "size": [170, 60], "tag": "核心枢纽" },
+    { "id": "collector", "type": "backend", "label": "Collector 服务", "sublabel": "文档收集解析", "pos": [620, 260], "size": [170, 60] },
+    { "id": "agentrt", "type": "backend", "label": "Agent 运行时", "sublabel": "aibitat + Flows", "pos": [880, 260], "size": [160, 60] },
+
+    { "id": "llm", "type": "cloud", "label": "LLM 提供商", "sublabel": "40+ 模型", "pos": [60, 460], "size": [150, 56] },
+    { "id": "sqlite", "type": "database", "label": "SQLite", "sublabel": "Prisma ORM", "pos": [340, 460], "size": [150, 56] },
+    { "id": "vectordb", "type": "database", "label": "向量数据库", "sublabel": "LanceDB 默认", "pos": [620, 460], "size": [170, 56] },
+
+    { "id": "embedder", "type": "cloud", "label": "嵌入/重排引擎", "pos": [60, 640], "size": [150, 56] },
+    { "id": "mcp", "type": "external", "label": "MCP / 外部工具", "pos": [880, 640], "size": [160, 56] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "客户端层", "wraps": ["user", "frontend"] },
+    { "kind": "region", "label": "服务端层（本仓库核心）", "wraps": ["server", "collector", "agentrt"] },
+    { "kind": "region", "label": "数据层", "wraps": ["sqlite", "vectordb"] },
+    { "kind": "region", "label": "外部依赖（不在本仓库源码内）", "wraps": ["llm", "embedder", "mcp"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "frontend", "label": "HTTP/SSE", "variant": "emphasis" },
+    { "id": "c2", "from": "frontend", "to": "server", "label": "REST API", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c3", "from": "server", "to": "collector", "label": "文档任务", "variant": "default" },
+    { "id": "c4", "from": "collector", "to": "agentrt", "label": "Agent 触发", "variant": "dashed" },
+    { "id": "c5", "from": "server", "to": "llm", "label": "Chat 流式", "variant": "emphasis", "fromSide": "left", "toSide": "right" },
+    { "id": "c6", "from": "server", "to": "sqlite", "label": "Prisma ORM", "variant": "default", "fromSide": "bottom", "toSide": "top", "labelDy": 30 },
+    { "id": "c7", "from": "collector", "to": "vectordb", "label": "向量写入", "variant": "default", "fromSide": "bottom", "toSide": "top", "labelDy": 30 },
+    { "id": "c8", "from": "llm", "to": "embedder", "label": "同提供商族", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 30 },
+    { "id": "c9", "from": "agentrt", "to": "mcp", "label": "工具查询", "variant": "default", "fromSide": "bottom", "toSide": "top", "labelDy": 30 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["用户→前端→Server→LLM 流式响应", "文档→Collector→切分→嵌入→向量库"] },
+    { "dot": "amber", "title": "关键设计", "items": ["多 LLM/向量库 capability seam", "Collector 独立进程解耦", "Agent + MCP 扩展工具生态", "外部渠道 Slack/Telegram/embed 见 ext-channels-api 叶子"] }
+  ]
+}

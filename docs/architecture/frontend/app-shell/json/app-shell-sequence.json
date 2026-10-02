@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "应用启动与路由鉴权时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 860] },
+  "participants": [
+    { "id": "browser", "type": "external", "label": "浏览器" },
+    { "id": "entry", "type": "frontend", "label": "路由入口" },
+    { "id": "guard", "type": "frontend", "label": "路由守卫" },
+    { "id": "auth", "type": "frontend", "label": "AuthContext" },
+    { "id": "api", "type": "external", "label": "后端 API" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "browser", "to": "entry", "y": 160, "label": "访问 URL，挂载 RouterProvider", "variant": "emphasis" },
+    { "id": "m2", "from": "entry", "to": "guard", "y": 230, "label": "lazy() 加载页面并包裹守卫", "variant": "default" },
+    { "id": "m3", "from": "guard", "to": "api", "y": 300, "label": "GET /onboarding 是否完成", "variant": "default" },
+    { "id": "m4", "from": "api", "to": "guard", "y": 360, "label": "onboardingComplete", "variant": "return" },
+    { "id": "m5", "from": "guard", "to": "api", "y": 430, "label": "GET /setup-complete 取模式", "variant": "default" },
+    { "id": "m6", "from": "api", "to": "guard", "y": 490, "label": "MultiUserMode/RequiresAuth", "variant": "return" },
+    { "id": "m7", "from": "guard", "to": "api", "y": 560, "label": "validateSessionTokenForUser", "variant": "default" },
+    { "id": "m8", "from": "auth", "to": "api", "y": 630, "label": "token 变化后 refreshUser()", "variant": "dashed" },
+    { "id": "m9", "from": "api", "to": "auth", "y": 690, "label": "刷新用户；失败清会话跳登录", "variant": "return" },
+    { "id": "m10", "from": "guard", "to": "browser", "y": 760, "label": "放行渲染页面 / 重定向", "variant": "emphasis" }
+  ]
+}

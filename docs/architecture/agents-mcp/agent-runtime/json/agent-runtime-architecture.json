@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Agent 运行时（AIbitat）架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "handler", "type": "backend", "label": "AgentHandler", "pos": [40, 80], "size": [150, 60], "tag": "工厂" },
+    { "id": "aibitat", "type": "backend", "label": "AIbitat 会话", "pos": [260, 80], "size": [150, 60], "tag": "对话图" },
+    { "id": "provider", "type": "cloud", "label": "LLM Provider", "pos": [490, 80], "size": [150, 60], "tag": "complete/stream" },
+    { "id": "plugins", "type": "backend", "label": "插件系统", "pos": [260, 270], "size": [150, 60], "tag": "use() 挂载" },
+    { "id": "fnmap", "type": "database", "label": "functions Map", "pos": [490, 270], "size": [150, 60], "tag": "可调用工具" },
+    { "id": "socket", "type": "external", "label": "前端 WebSocket", "pos": [720, 270], "size": [150, 60], "tag": "流式回传" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils/agents（本仓库源码内）", "wraps": ["handler", "aibitat", "provider", "plugins", "fnmap"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "handler", "to": "aibitat", "label": "建会话+挂载", "variant": "emphasis" },
+    { "id": "c2", "from": "aibitat", "to": "provider", "label": "complete/stream", "variant": "emphasis" },
+    { "id": "c3", "from": "aibitat", "to": "plugins", "label": "use() 注册", "labelDy": 26 },
+    { "id": "c4", "from": "plugins", "to": "fnmap", "label": "function() 登记" },
+    { "id": "c5", "from": "provider", "to": "fnmap", "label": "functionCall 回调", "variant": "dashed", "labelDy": 26 },
+    { "id": "c6", "from": "aibitat", "to": "socket", "label": "introspect 流式", "variant": "dashed", "route": "orthogonal-v" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["Handler 建会话 → Provider 推理 → 工具回调 → 流式回前端"] }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "记忆与外部渠道架构", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "tg", "type": "external", "label": "telegramBot", "pos": [40, 80], "size": [140, 60], "tag": "轮询收消息" },
+    { "id": "bgs", "type": "backend", "label": "BackgroundWorkers", "pos": [280, 80], "size": [160, 60], "tag": "任务队列" },
+    { "id": "aib", "type": "backend", "label": "AIbitat", "pos": [540, 80], "size": [140, 60], "tag": "对话执行" },
+    { "id": "mem", "type": "database", "label": "长期记忆", "pos": [280, 270], "size": [150, 60], "tag": "向量库" },
+    { "id": "push", "type": "external", "label": "PushNotifications", "pos": [540, 270], "size": [150, 60], "tag": "webhook 通知" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "server/utils（本仓库源码内）", "wraps": ["bgs", "aib", "mem"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "tg", "to": "bgs", "label": "入站消息入队", "variant": "emphasis" },
+    { "id": "c2", "from": "bgs", "to": "aib", "label": "起对话任务", "variant": "emphasis" },
+    { "id": "c3", "from": "bgs", "to": "mem", "label": "记录记忆", "fromSide": "bottom", "toSide": "top", "labelDy": 26 },
+    { "id": "c4", "from": "aib", "to": "push", "label": "完成后通知", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 26 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["外部渠道收消息 → 队列 → 跑 agent → 落记忆 / 推通知"] }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "cloud-deployments 云部署模板架构图", "quality_profile": "showcase", "locale": "zh-CN" },
+  "components": [
+    { "id": "ops", "type": "external", "label": "运维/开发者", "pos": [60, 280], "size": [120, 60] },
+    { "id": "tpl", "type": "frontend", "label": "云部署模板集", "pos": [250, 280], "size": [140, 60], "tag": "AWS/GCP/K8s/Helm/DO" },
+    { "id": "image", "type": "backend", "label": "anythingllm 镜像", "pos": [450, 280], "size": [130, 60] },
+    { "id": "cloud", "type": "cloud", "label": "云基础设施", "pos": [640, 280], "size": [130, 60], "tag": "EC2/GKE/Pods" },
+    { "id": "user", "type": "external", "label": "终端用户", "pos": [830, 280], "size": [110, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "云部署产物", "wraps": ["tpl", "image", "cloud"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "ops", "to": "tpl", "label": "选模板填参数", "variant": "emphasis" },
+    { "id": "c2", "from": "tpl", "to": "image", "label": "引用镜像", "variant": "default" },
+    { "id": "c3", "from": "image", "to": "cloud", "label": "编排部署", "variant": "emphasis" },
+    { "id": "c4", "from": "cloud", "to": "user", "label": "提供服务", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "模板要点", "items": ["七类云平台模板", "均基于同一 Docker 镜像", "含持久卷与端口暴露"] }
+  ]
+}

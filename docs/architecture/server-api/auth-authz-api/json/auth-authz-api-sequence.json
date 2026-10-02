@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": { "title": "多用户登录请求令牌时序", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1080, 760] },
+  "participants": [
+    { "id": "c", "type": "frontend", "label": "Web 客户端" },
+    { "id": "e", "type": "backend", "label": "登录端点" },
+    { "id": "u", "type": "database", "label": "User 模型" },
+    { "id": "log", "type": "backend", "label": "EventLogs" },
+    { "id": "jwt", "type": "security", "label": "makeJWT" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "c", "to": "e", "y": 170, "label": "POST /request-token 凭据", "variant": "emphasis" },
+    { "id": "m2", "from": "e", "to": "u", "y": 250, "label": "按用户名查用户", "variant": "default" },
+    { "id": "m3", "from": "u", "to": "e", "y": 320, "label": "返回用户记录", "variant": "return" },
+    { "id": "m4", "from": "e", "to": "log", "y": 390, "label": "失败记录登录事件", "variant": "dashed" },
+    { "id": "m5", "from": "e", "to": "jwt", "y": 460, "label": "bcrypt 校验通过后签发", "variant": "emphasis" },
+    { "id": "m6", "from": "jwt", "to": "e", "y": 530, "label": "返回会话 JWT", "variant": "return" },
+    { "id": "m7", "from": "e", "to": "c", "y": 610, "label": "返回 user + token", "variant": "return" }
+  ]
+}
